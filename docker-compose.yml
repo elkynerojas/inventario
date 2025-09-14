@@ -1,0 +1,37 @@
+services:
+    mysql:
+        container_name: inv_db
+        image: mysql:8.0.31
+        platform: linux/amd64
+        ports:
+        - 3306:3306
+        environment:
+            MYSQL_ROOT_PASSWORD: mysqlrootkey
+            MYSQL_DATABASE: db
+
+    phpmyadmin:
+        container_name: inv_pma
+        image: phpmyadmin:5.2.0-apache
+        platform: linux/amd64
+        ports:
+        - 8080:80
+        environment:
+            PMA_HOST: mysql
+            PMA_PORT: 3306
+            PMA_USER: root
+            PMA_PASSWORD: mysqlrootkey
+            MEMORY_LIMIT: -1
+            UPLOAD_LIMIT: 4096M
+        depends_on:
+        - mysql
+
+    laravel-app:
+        image: elkynerojas/laravel-php:8.3
+        container_name: inv_app
+        platform: linux/amd64
+        volumes:
+        - .:/var/www/html
+        ports:
+        - 80:80
+        depends_on:
+        - phpmyadmin
