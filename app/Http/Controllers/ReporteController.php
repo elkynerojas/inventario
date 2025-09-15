@@ -23,25 +23,61 @@ class ReporteController extends Controller
     {
         $query = Activo::query();
 
-        // Aplicar filtros específicos
-        if ($request->filled('filtro') && $request->filled('parametro')) {
-            switch ($request->filtro) {
-                case 'estado':
-                    $query->porEstado($request->parametro);
-                    break;
-                case 'ubicacion':
-                    $query->porUbicacion($request->parametro);
-                    break;
-                case 'responsable':
-                    $query->porResponsable($request->parametro);
-                    break;
-            }
+        // Aplicar búsqueda general si existe
+        if ($request->filled('buscar')) {
+            $query->buscar($request->buscar);
         }
 
-        $activos = $query->orderBy('id', 'desc')->get();
+        // Filtro por estado
+        if ($request->filled('estado')) {
+            $query->where('estado', $request->estado);
+        }
+
+        // Filtro por ubicación
+        if ($request->filled('ubicacion')) {
+            $query->where('ubicacion', $request->ubicacion);
+        }
+
+        // Filtro por responsable
+        if ($request->filled('responsable')) {
+            $query->where('nombre_responsable', $request->responsable);
+        }
+
+        // Filtro por rango de valor
+        if ($request->filled('valor_minimo')) {
+            $query->where('valor_compra', '>=', $request->valor_minimo);
+        }
+
+        if ($request->filled('valor_maximo')) {
+            $query->where('valor_compra', '<=', $request->valor_maximo);
+        }
+
+        // Filtro por rango de fechas
+        if ($request->filled('fecha_desde')) {
+            $query->whereDate('fecha_compra', '>=', $request->fecha_desde);
+        }
+
+        if ($request->filled('fecha_hasta')) {
+            $query->whereDate('fecha_compra', '<=', $request->fecha_hasta);
+        }
+
+        $activos = $query->orderBy('id', 'desc')->paginate(20);
         $estadisticas = Activo::obtenerEstadisticas();
 
-        return view('reportes.index', compact('activos', 'estadisticas'));
+        // Obtener opciones para los selects
+        $ubicaciones = Activo::select('ubicacion')
+            ->distinct()
+            ->whereNotNull('ubicacion')
+            ->orderBy('ubicacion')
+            ->pluck('ubicacion');
+
+        $responsables = Activo::select('nombre_responsable')
+            ->distinct()
+            ->whereNotNull('nombre_responsable')
+            ->orderBy('nombre_responsable')
+            ->pluck('nombre_responsable');
+
+        return view('reportes.index', compact('activos', 'estadisticas', 'ubicaciones', 'responsables'));
     }
 
     /**
@@ -51,19 +87,42 @@ class ReporteController extends Controller
     {
         $query = Activo::query();
 
-        // Aplicar filtros específicos
-        if ($request->filled('filtro') && $request->filled('parametro')) {
-            switch ($request->filtro) {
-                case 'estado':
-                    $query->porEstado($request->parametro);
-                    break;
-                case 'ubicacion':
-                    $query->porUbicacion($request->parametro);
-                    break;
-                case 'responsable':
-                    $query->porResponsable($request->parametro);
-                    break;
-            }
+        // Aplicar búsqueda general si existe
+        if ($request->filled('buscar')) {
+            $query->buscar($request->buscar);
+        }
+
+        // Filtro por estado
+        if ($request->filled('estado')) {
+            $query->where('estado', $request->estado);
+        }
+
+        // Filtro por ubicación
+        if ($request->filled('ubicacion')) {
+            $query->where('ubicacion', $request->ubicacion);
+        }
+
+        // Filtro por responsable
+        if ($request->filled('responsable')) {
+            $query->where('nombre_responsable', $request->responsable);
+        }
+
+        // Filtro por rango de valor
+        if ($request->filled('valor_minimo')) {
+            $query->where('valor_compra', '>=', $request->valor_minimo);
+        }
+
+        if ($request->filled('valor_maximo')) {
+            $query->where('valor_compra', '<=', $request->valor_maximo);
+        }
+
+        // Filtro por rango de fechas
+        if ($request->filled('fecha_desde')) {
+            $query->whereDate('fecha_compra', '>=', $request->fecha_desde);
+        }
+
+        if ($request->filled('fecha_hasta')) {
+            $query->whereDate('fecha_compra', '<=', $request->fecha_hasta);
         }
 
         $activos = $query->orderBy('id', 'desc')->get();
@@ -78,19 +137,42 @@ class ReporteController extends Controller
     {
         $query = Activo::query();
 
-        // Aplicar filtros específicos
-        if ($request->filled('filtro') && $request->filled('parametro')) {
-            switch ($request->filtro) {
-                case 'estado':
-                    $query->porEstado($request->parametro);
-                    break;
-                case 'ubicacion':
-                    $query->porUbicacion($request->parametro);
-                    break;
-                case 'responsable':
-                    $query->porResponsable($request->parametro);
-                    break;
-            }
+        // Aplicar búsqueda general si existe
+        if ($request->filled('buscar')) {
+            $query->buscar($request->buscar);
+        }
+
+        // Filtro por estado
+        if ($request->filled('estado')) {
+            $query->where('estado', $request->estado);
+        }
+
+        // Filtro por ubicación
+        if ($request->filled('ubicacion')) {
+            $query->where('ubicacion', $request->ubicacion);
+        }
+
+        // Filtro por responsable
+        if ($request->filled('responsable')) {
+            $query->where('nombre_responsable', $request->responsable);
+        }
+
+        // Filtro por rango de valor
+        if ($request->filled('valor_minimo')) {
+            $query->where('valor_compra', '>=', $request->valor_minimo);
+        }
+
+        if ($request->filled('valor_maximo')) {
+            $query->where('valor_compra', '<=', $request->valor_maximo);
+        }
+
+        // Filtro por rango de fechas
+        if ($request->filled('fecha_desde')) {
+            $query->whereDate('fecha_compra', '>=', $request->fecha_desde);
+        }
+
+        if ($request->filled('fecha_hasta')) {
+            $query->whereDate('fecha_compra', '<=', $request->fecha_hasta);
         }
 
         // Limitar la cantidad de registros para evitar problemas de memoria
@@ -99,9 +181,7 @@ class ReporteController extends Controller
         
         // Calcular totales
         $totalValor = $activos->sum('valor_compra');
-        $filtroAplicado = $request->filled('filtro') && $request->filled('parametro') 
-            ? ucfirst($request->filtro) . ': ' . $request->parametro 
-            : 'Todos los activos';
+        $filtroAplicado = $this->generarDescripcionFiltros($request);
 
         // Configurar opciones de PDF para optimizar memoria
         $pdf = Pdf::loadView('reportes.pdf', compact('activos', 'estadisticas', 'totalValor', 'filtroAplicado'));
@@ -265,6 +345,52 @@ class ReporteController extends Controller
         $estadisticas['actividades_recientes'] = $actividadesRecientes;
 
         return view('reportes.estadisticas', compact('estadisticas'));
+    }
+
+    /**
+     * Generar descripción de filtros aplicados
+     */
+    private function generarDescripcionFiltros(Request $request): string
+    {
+        $filtros = [];
+
+        if ($request->filled('buscar')) {
+            $filtros[] = "Búsqueda: \"{$request->buscar}\"";
+        }
+
+        if ($request->filled('estado')) {
+            $filtros[] = "Estado: " . ucfirst($request->estado);
+        }
+
+        if ($request->filled('ubicacion')) {
+            $filtros[] = "Ubicación: {$request->ubicacion}";
+        }
+
+        if ($request->filled('responsable')) {
+            $filtros[] = "Responsable: {$request->responsable}";
+        }
+
+        if ($request->filled('valor_minimo') || $request->filled('valor_maximo')) {
+            if ($request->filled('valor_minimo') && $request->filled('valor_maximo')) {
+                $filtros[] = "Valor: $" . number_format($request->valor_minimo, 2) . " - $" . number_format($request->valor_maximo, 2);
+            } elseif ($request->filled('valor_minimo')) {
+                $filtros[] = "Valor desde: $" . number_format($request->valor_minimo, 2);
+            } else {
+                $filtros[] = "Valor hasta: $" . number_format($request->valor_maximo, 2);
+            }
+        }
+
+        if ($request->filled('fecha_desde') || $request->filled('fecha_hasta')) {
+            if ($request->filled('fecha_desde') && $request->filled('fecha_hasta')) {
+                $filtros[] = "Fecha: " . \Carbon\Carbon::parse($request->fecha_desde)->format('d/m/Y') . " - " . \Carbon\Carbon::parse($request->fecha_hasta)->format('d/m/Y');
+            } elseif ($request->filled('fecha_desde')) {
+                $filtros[] = "Fecha desde: " . \Carbon\Carbon::parse($request->fecha_desde)->format('d/m/Y');
+            } else {
+                $filtros[] = "Fecha hasta: " . \Carbon\Carbon::parse($request->fecha_hasta)->format('d/m/Y');
+            }
+        }
+
+        return empty($filtros) ? 'Todos los activos' : implode(', ', $filtros);
     }
 }
 
