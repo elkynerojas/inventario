@@ -107,7 +107,8 @@ class ActivoController extends Controller
      */
     public function edit(Activo $activo): View
     {
-        return view('activos.edit', compact('activo'));
+        $activoDadoDeBaja = $activo->tieneBaja() || $activo->estado === 'dado de baja';
+        return view('activos.edit', compact('activo', 'activoDadoDeBaja'));
     }
 
     /**
@@ -115,6 +116,12 @@ class ActivoController extends Controller
      */
     public function update(Request $request, Activo $activo): RedirectResponse
     {
+        // Verificar si el activo está dado de baja
+        if ($activo->tieneBaja() || $activo->estado === 'dado de baja') {
+            return redirect()->route('activos.show', $activo)
+                ->with('error', 'No se puede editar un activo que ha sido dado de baja.');
+        }
+
         $validated = $request->validate([
             'codigo' => 'required|string|max:50|unique:activos,codigo,' . $activo->id,
             'nombre' => 'required|string|max:200',

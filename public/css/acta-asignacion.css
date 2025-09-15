@@ -1,0 +1,195 @@
+/* Estilos para Acta de Asignación de Activos */
+.acta-asignacion {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.4;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+}
+
+.acta-asignacion .header {
+    text-align: center;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #dc3545;
+    padding-bottom: 20px;
+}
+
+.acta-asignacion .header h1 {
+    color: #dc3545;
+    font-size: 24px;
+    margin: 0;
+    font-weight: bold;
+}
+
+.acta-asignacion .header h2 {
+    color: #666;
+    font-size: 18px;
+    margin: 10px 0 0 0;
+    font-weight: normal;
+}
+
+.acta-asignacion .empresa-info {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 10px;
+    color: #666;
+}
+
+.acta-asignacion .acta-info {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.acta-asignacion .acta-info h3 {
+    margin: 0 0 10px 0;
+    color: #dc3545;
+    font-size: 14px;
+}
+
+.acta-asignacion .info-grid {
+    display: table;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.acta-asignacion .info-row {
+    display: table-row;
+}
+
+.acta-asignacion .info-label {
+    display: table-cell;
+    width: 30%;
+    font-weight: bold;
+    padding: 5px 10px 5px 0;
+    vertical-align: top;
+}
+
+.acta-asignacion .info-value {
+    display: table-cell;
+    padding: 5px 0;
+    vertical-align: top;
+}
+
+.acta-asignacion .activo-details {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.acta-asignacion .activo-details h4 {
+    margin: 0 0 15px 0;
+    color: #dc3545;
+    font-size: 14px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+.acta-asignacion .usuario-details {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.acta-asignacion .usuario-details h4 {
+    margin: 0 0 15px 0;
+    color: #dc3545;
+    font-size: 14px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+.acta-asignacion .firmas-section {
+    margin-top: 40px;
+    page-break-inside: avoid;
+}
+
+.acta-asignacion .firmas-grid {
+    display: table;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.acta-asignacion .firma-box {
+    display: table-cell;
+    width: 50%;
+    text-align: center;
+    padding: 20px;
+    vertical-align: top;
+}
+
+.acta-asignacion .firma-line {
+    border-bottom: 1px solid #333;
+    margin-bottom: 5px;
+    height: 40px;
+}
+
+.acta-asignacion .firma-label {
+    font-size: 10px;
+    color: #666;
+    margin-top: 5px;
+}
+
+.acta-asignacion .observaciones {
+    background-color: #f8f9fa;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    min-height: 60px;
+}
+
+.acta-asignacion .observaciones h4 {
+    margin: 0 0 10px 0;
+    color: #dc3545;
+    font-size: 14px;
+}
+
+.acta-asignacion .footer {
+    margin-top: 40px;
+    text-align: center;
+    font-size: 10px;
+    color: #666;
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+}
+
+.acta-asignacion .estado-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.acta-asignacion .estado-activa {
+    background-color: #28a745;
+    color: white;
+}
+
+.acta-asignacion .estado-devuelta {
+    background-color: #17a2b8;
+    color: white;
+}
+
+.acta-asignacion .estado-perdida {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+@media print {
+    .acta-asignacion {
+        margin: 0;
+        padding: 15px;
+    }
+    
+    .acta-asignacion .firmas-section {
+        page-break-inside: avoid;
+    }
+}
