@@ -3,6 +3,7 @@
 use App\Http\Controllers\ActivoController;
 use App\Http\Controllers\AsignacionActivoController;
 use App\Http\Controllers\BajaActivoController;
+use App\Http\Controllers\ConfiguracionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\ProfileController;
@@ -44,6 +45,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('reportes/excel', [ReporteController::class, 'excel'])->name('reportes.excel');
     Route::get('reportes/pdf', [ReporteController::class, 'pdf'])->name('reportes.pdf');
     Route::get('reportes/estadisticas', [ReporteController::class, 'estadisticas'])->name('reportes.estadisticas');
+    
+    // Rutas de configuración (solo para administradores)
+    Route::middleware(['auth'])->group(function () {
+        Route::resource('configuraciones', ConfiguracionController::class);
+        Route::post('configuraciones/categoria/{categoria}/actualizar', [ConfiguracionController::class, 'actualizarCategoria'])->name('configuraciones.actualizar-categoria');
+        Route::post('configuraciones/restaurar-defecto', [ConfiguracionController::class, 'restaurarDefecto'])->name('configuraciones.restaurar-defecto');
+        Route::get('configuraciones/exportar', [ConfiguracionController::class, 'exportar'])->name('configuraciones.exportar');
+        Route::post('configuraciones/importar', [ConfiguracionController::class, 'importar'])->name('configuraciones.importar');
+    });
 });
 
 Route::middleware('auth')->group(function () {
