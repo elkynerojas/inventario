@@ -149,4 +149,76 @@ class Activo extends Model
     {
         return $this->estado === 'dado de baja';
     }
+
+    /**
+     * Relación con asignaciones
+     */
+    public function asignaciones()
+    {
+        return $this->hasMany(AsignacionActivo::class);
+    }
+
+    /**
+     * Obtener asignación activa actual
+     */
+    public function asignacionActiva()
+    {
+        return $this->hasOne(AsignacionActivo::class)->activas();
+    }
+
+    /**
+     * Obtener usuario actual asignado
+     */
+    public function usuarioAsignado()
+    {
+        return $this->hasOneThrough(
+            User::class,
+            AsignacionActivo::class,
+            'activo_id',
+            'id',
+            'id',
+            'user_id'
+        )->where('asignaciones_activos.estado', 'activa');
+    }
+
+    /**
+     * Verificar si el activo está asignado
+     */
+    public function estaAsignado(): bool
+    {
+        return $this->asignacionActiva()->exists();
+    }
+
+    /**
+     * Verificar si el activo está disponible para asignación
+     */
+    public function estaDisponible(): bool
+    {
+        return !$this->estaAsignado() && !$this->estaDadoDeBaja();
+    }
+
+    /**
+     * Obtener historial de asignaciones
+     */
+    public function historialAsignaciones()
+    {
+        return $this->asignaciones()->with(['usuario', 'asignadoPor'])->orderBy('fecha_asignacion', 'desc');
+    }
+
+    /**
+     * Obtener estadísticas de asignaciones del activo
+     */
+    public function estadisticasAsignaciones(): array
+    {
+        $asignaciones = $this->asignaciones();
+        
+        return [
+            'total_asignaciones' => $asignaciones->count(),
+            'asignaciones_activas' => $asignaciones->activas()->count(),
+            'asignaciones_devueltas' => $asignaciones->devueltas()->count(),
+            'asignaciones_perdidas' => $asignaciones->perdidas()->count(),
+            'esta_asignado' => $this->estaAsignado(),
+            'esta_disponible' => $this->estaDisponible(),
+        ];
+    }
 }

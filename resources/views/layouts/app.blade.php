@@ -345,6 +345,11 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="{{ route('asignaciones.index') }}">
+                            <i class="bi bi-person-check"></i> Asignaciones
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ route('reportes.index') }}">
                             <i class="bi bi-graph-up"></i> Reportes
                         </a>
