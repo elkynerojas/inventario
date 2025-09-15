@@ -17,29 +17,60 @@ class ActivoController extends Controller
     {
         $query = Activo::query();
 
-        // Aplicar búsqueda si existe
+        // Aplicar búsqueda general si existe
         if ($request->filled('buscar')) {
             $query->buscar($request->buscar);
         }
 
-        // Aplicar filtros específicos
-        if ($request->filled('filtro') && $request->filled('parametro')) {
-            switch ($request->filtro) {
-                case 'estado':
-                    $query->porEstado($request->parametro);
-                    break;
-                case 'ubicacion':
-                    $query->porUbicacion($request->parametro);
-                    break;
-                case 'responsable':
-                    $query->porResponsable($request->parametro);
-                    break;
-            }
+        // Filtro por estado
+        if ($request->filled('estado')) {
+            $query->where('estado', $request->estado);
+        }
+
+        // Filtro por ubicación
+        if ($request->filled('ubicacion')) {
+            $query->where('ubicacion', $request->ubicacion);
+        }
+
+        // Filtro por responsable
+        if ($request->filled('responsable')) {
+            $query->where('nombre_responsable', $request->responsable);
+        }
+
+        // Filtro por rango de valor
+        if ($request->filled('valor_minimo')) {
+            $query->where('valor_compra', '>=', $request->valor_minimo);
+        }
+
+        if ($request->filled('valor_maximo')) {
+            $query->where('valor_compra', '<=', $request->valor_maximo);
+        }
+
+        // Filtro por rango de fechas
+        if ($request->filled('fecha_desde')) {
+            $query->whereDate('fecha_compra', '>=', $request->fecha_desde);
+        }
+
+        if ($request->filled('fecha_hasta')) {
+            $query->whereDate('fecha_compra', '<=', $request->fecha_hasta);
         }
 
         $activos = $query->orderBy('id', 'asc')->paginate(20);
 
-        return view('activos.index', compact('activos'));
+        // Obtener opciones para los selects
+        $ubicaciones = Activo::select('ubicacion')
+            ->distinct()
+            ->whereNotNull('ubicacion')
+            ->orderBy('ubicacion')
+            ->pluck('ubicacion');
+
+        $responsables = Activo::select('nombre_responsable')
+            ->distinct()
+            ->whereNotNull('nombre_responsable')
+            ->orderBy('nombre_responsable')
+            ->pluck('nombre_responsable');
+
+        return view('activos.index', compact('activos', 'ubicaciones', 'responsables'));
     }
 
     /**
