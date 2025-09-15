@@ -33,7 +33,7 @@
                             <i class="bi bi-search"></i>
                         </span>
                         <input type="text" name="buscar" class="form-control" 
-                               placeholder="Buscar por código, nombre, marca, modelo, serial, ubicación, responsable..." 
+                               placeholder="Buscar por código, nombre, ubicación, responsable..." 
                                value="{{ request('buscar') }}">
                         <button class="btn btn-primary" type="submit">
                             <i class="bi bi-search"></i> Buscar
@@ -54,15 +54,11 @@
                                     <th>ID</th>
                                     <th>Código</th>
                                     <th>Nombre</th>
-                                    <th>Marca</th>
-                                    <th>Modelo</th>
-                                    <th>Serial</th>
                                     <th>Estado</th>
                                     <th>Ubicación</th>
                                     <th>Responsable</th>
                                     <th>Valor</th>
                                     <th>Fecha Compra</th>
-                                    <th>Tipo</th>
                                     @if(auth()->user()->esAdmin())
                                     <th>Acciones</th>
                                     @endif
@@ -74,9 +70,6 @@
                                     <td>{{ $activo->id }}</td>
                                     <td>{{ $activo->codigo }}</td>
                                     <td>{{ $activo->nombre }}</td>
-                                    <td>{{ $activo->marca ?: 'No especificada' }}</td>
-                                    <td>{{ $activo->modelo ?: 'No especificado' }}</td>
-                                    <td>{{ $activo->serial ?: 'No especificado' }}</td>
                                     <td>
                                         <span class="badge badge-estado {{ strtolower(str_replace(' ', '-', $activo->estado)) }}">
                                             {{ $activo->estado }}
@@ -86,7 +79,6 @@
                                     <td>{{ $activo->nombre_responsable }}</td>
                                     <td>${{ number_format($activo->valor_compra, 2) }}</td>
                                     <td>{{ $activo->fecha_compra ? $activo->fecha_compra->format('d/m/Y') : 'N/A' }}</td>
-                                    <td>{{ $activo->tipo_bien }}</td>
                                     @if(auth()->user()->esAdmin())
                                     <td>
                                         <div class="btn-group" role="group">
