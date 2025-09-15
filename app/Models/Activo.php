@@ -194,7 +194,7 @@ class Activo extends Model
      */
     public function estaDisponible(): bool
     {
-        return !$this->estaAsignado() && !$this->estaDadoDeBaja();
+        return !$this->estaAsignado() && !$this->estaDadoDeBaja() && !$this->tieneBaja();
     }
 
     /**
@@ -206,19 +206,26 @@ class Activo extends Model
     }
 
     /**
-     * Obtener estadísticas de asignaciones del activo
+     * Relación con bajas
      */
-    public function estadisticasAsignaciones(): array
+    public function bajas()
     {
-        $asignaciones = $this->asignaciones();
-        
-        return [
-            'total_asignaciones' => $asignaciones->count(),
-            'asignaciones_activas' => $asignaciones->activas()->count(),
-            'asignaciones_devueltas' => $asignaciones->devueltas()->count(),
-            'asignaciones_perdidas' => $asignaciones->perdidas()->count(),
-            'esta_asignado' => $this->estaAsignado(),
-            'esta_disponible' => $this->estaDisponible(),
-        ];
+        return $this->hasMany(BajaActivo::class);
+    }
+
+    /**
+     * Verificar si el activo tiene una baja registrada
+     */
+    public function tieneBaja(): bool
+    {
+        return $this->bajas()->exists();
+    }
+
+    /**
+     * Obtener la última baja del activo
+     */
+    public function ultimaBaja()
+    {
+        return $this->hasOne(BajaActivo::class)->latest();
     }
 }

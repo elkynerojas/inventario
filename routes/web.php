@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ActivoController;
 use App\Http\Controllers\AsignacionActivoController;
+use App\Http\Controllers\BajaActivoController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -27,6 +28,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('asignaciones/api/activos-disponibles', [AsignacionActivoController::class, 'activosDisponibles'])->name('asignaciones.activos-disponibles');
     Route::get('usuarios/{usuario}/asignaciones', [AsignacionActivoController::class, 'porUsuario'])->name('asignaciones.por-usuario');
     Route::get('activos/{activo}/historial-asignaciones', [AsignacionActivoController::class, 'historialActivo'])->name('asignaciones.historial-activo');
+
+    // Rutas de bajas de activos
+    Route::resource('bajas', BajaActivoController::class)->except(['edit', 'update', 'destroy']);
+    Route::get('activos/{activo}/baja', [BajaActivoController::class, 'create'])->name('bajas.create');
+    Route::post('activos/{activo}/baja', [BajaActivoController::class, 'store'])->name('bajas.store');
+    Route::get('bajas/{baja}/acta', [BajaActivoController::class, 'generarActa'])->name('bajas.acta');
     
     // Rutas de reportes
     Route::get('reportes', [ReporteController::class, 'index'])->name('reportes.index');
