@@ -40,7 +40,7 @@
             <div class="container">
                 <a class="navbar-brand d-flex align-items-center" href="#">
                     <img src="{{ colegio_logo() }}" alt="Logo" class="me-2" style="height: 40px;">
-                    <h1 class="h5 mb-0 fw-bold text-dark">
+                    <h1 class="h5 mb-0 fw-bold text-danger">
                         {{ colegio_nombre() ?? 'Sistema de Inventario' }}
                     </h1>
                 </a>
@@ -55,11 +55,7 @@
                             <a href="{{ route('login') }}" class="btn btn-outline-primary me-2">
                                 <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión
                             </a>
-                            @if (Route::has('register'))
-                                <a href="{{ route('register') }}" class="btn btn-primary">
-                                    <i class="bi bi-person-plus me-2"></i>Registrarse
-                                </a>
-                            @endif
+                            
                         @endauth
                     @endif
                 </div>
@@ -71,10 +67,10 @@
             <div class="container">
                 <div class="row align-items-center min-vh-50">
                     <div class="col-lg-6 text-center text-lg-start">
-                        <h1 class="display-4 fw-bold mb-4">
+                        <h1 class="display-4 fw-bold mb-4 text-danger">
                             Sistema de Inventario Inteligente
                         </h1>
-                        <p class="lead mb-4">
+                        <p class="lead mb-4 text-danger">
                             Gestiona todos tus activos de manera eficiente con nuestra plataforma integral de inventario.
                         </p>
                         <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center justify-content-lg-start">
@@ -86,9 +82,6 @@
                                 @else
                                     <a href="{{ route('login') }}" class="btn btn-light btn-lg px-4 py-3 fw-semibold">
                                         <i class="bi bi-box-arrow-in-right me-2"></i>Comenzar Ahora
-                                    </a>
-                                    <a href="{{ route('register') }}" class="btn btn-outline-light btn-lg px-4 py-3 fw-semibold">
-                                        <i class="bi bi-person-plus me-2"></i>Registrarse
                                     </a>
                                 @endauth
                             @endif
