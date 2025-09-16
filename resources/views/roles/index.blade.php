@@ -76,19 +76,19 @@
                                         <td>{{ $rol->created_at->format('d/m/Y') }}</td>
                                         <td>
                                             <div class="btn-group" role="group">
-                                                <a href="{{ route('roles.show', $rol) }}" 
+                                                <a href="{{ route('roles.show', ['role' => $rol->id]) }}" 
                                                    class="btn btn-sm btn-outline-info" 
                                                    title="Ver detalles">
                                                     <i class="bi bi-eye"></i>
                                                 </a>
-                                                <a href="{{ route('roles.edit', $rol) }}" 
+                                                <a href="{{ route('roles.edit', ['role' => $rol->id]) }}" 
                                                    class="btn btn-sm btn-outline-warning" 
                                                    title="Editar">
                                                     <i class="bi bi-pencil"></i>
                                                 </a>
                                                 @if($rol->nombre !== 'admin')
                                                     <form method="POST" 
-                                                          action="{{ route('roles.destroy', $rol) }}" 
+                                                          action="{{ route('roles.destroy', ['role' => $rol->id]) }}" 
                                                           class="d-inline"
                                                           onsubmit="return confirm('¿Está seguro de eliminar este rol? Esta acción no se puede deshacer.')">
                                                         @csrf

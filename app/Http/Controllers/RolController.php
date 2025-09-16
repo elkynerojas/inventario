@@ -55,8 +55,16 @@ class RolController extends Controller
     /**
      * Mostrar los detalles de un rol específico
      */
-    public function show(Rol $rol)
+    public function show($id)
     {
+        $rol = Rol::find($id);
+        
+        // Verificar que el rol existe
+        if (!$rol) {
+            return redirect()->route('roles.index')
+                ->with('error', 'Rol no encontrado.');
+        }
+        
         $rol->load('usuarios');
         return view('roles.show', compact('rol'));
     }
@@ -64,16 +72,32 @@ class RolController extends Controller
     /**
      * Mostrar el formulario para editar un rol
      */
-    public function edit(Rol $rol)
+    public function edit($id)
     {
+        $rol = Rol::find($id);
+        
+        // Verificar que el rol existe
+        if (!$rol) {
+            return redirect()->route('roles.index')
+                ->with('error', 'Rol no encontrado.');
+        }
+        
         return view('roles.edit', compact('rol'));
     }
 
     /**
      * Actualizar un rol
      */
-    public function update(Request $request, Rol $rol)
+    public function update(Request $request, $id)
     {
+        $rol = Rol::find($id);
+        
+        // Verificar que el rol existe
+        if (!$rol) {
+            return redirect()->route('roles.index')
+                ->with('error', 'Rol no encontrado.');
+        }
+        
         $validator = Validator::make($request->all(), [
             'nombre' => [
                 'required',
@@ -104,8 +128,16 @@ class RolController extends Controller
     /**
      * Eliminar un rol
      */
-    public function destroy(Rol $rol)
+    public function destroy($id)
     {
+        $rol = Rol::find($id);
+        
+        // Verificar que el rol existe
+        if (!$rol) {
+            return redirect()->route('roles.index')
+                ->with('error', 'Rol no encontrado.');
+        }
+        
         // Verificar si el rol tiene usuarios asignados
         if ($rol->usuarios()->count() > 0) {
             return redirect()->route('roles.index')
