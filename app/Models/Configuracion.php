@@ -164,6 +164,61 @@ class Configuracion extends Model
     }
 
     /**
+     * Obtener URL del logo del colegio
+     */
+    public static function obtenerUrlLogo()
+    {
+        $config = self::where('clave', 'logo_colegio')
+            ->where('activo', true)
+            ->first();
+        
+        if ($config && !empty($config->valor)) {
+            $logoPath = $config->valor;
+            
+            // Si es una ruta de images/logos/, usar asset() directamente
+            if (str_starts_with($logoPath, 'images/logos/')) {
+                $filePath = public_path($logoPath);
+                if (file_exists($filePath)) {
+                    return asset($logoPath);
+                }
+            }
+            
+            // Compatibilidad con rutas antiguas de storage (migración)
+            if (str_starts_with($logoPath, 'configuraciones/')) {
+                $filePath = storage_path('app/public/' . $logoPath);
+                if (file_exists($filePath)) {
+                    return \Illuminate\Support\Facades\Storage::url($logoPath);
+                }
+            }
+            
+            // Si es una ruta absoluta que empieza con /, verificar existencia
+            if (str_starts_with($logoPath, '/')) {
+                if (file_exists(public_path($logoPath))) {
+                    return $logoPath;
+                }
+            }
+        }
+        
+        // Fallbacks: intentar logos por defecto en orden de prioridad
+        $fallbacks = [
+            'images/logos/logo-colegio-actual.png',
+            'images/logos/logo-colegio-actual.jpg',
+            'images/logos/logo-colegio-actual.svg',
+            'images/logos/logo-colegio.png',
+            'images/logos/logo-colegio.svg'
+        ];
+        
+        foreach ($fallbacks as $fallback) {
+            if (file_exists(public_path($fallback))) {
+                return asset($fallback);
+            }
+        }
+        
+        // Último recurso: logo SVG por defecto
+        return asset('images/logos/logo-colegio.svg');
+    }
+
+    /**
      * Limpiar cache de configuraciones
      */
     public static function limpiarCache()
@@ -175,6 +230,9 @@ class Configuracion extends Model
         foreach ($categorias as $categoria) {
             Cache::forget("configuracion.categoria.{$categoria}");
         }
+        
+        // Limpiar cache individual de configuraciones específicas
+        Cache::forget("configuracion.logo_colegio");
         
         // Limpiar cache individual
         $claves = self::select('clave')->pluck('clave');

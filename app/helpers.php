@@ -110,35 +110,7 @@ if (!function_exists('colegio_logo')) {
      */
     function colegio_logo()
     {
-        try {
-            // Buscar directamente en la tabla de configuraciones
-            $configuracion = \App\Models\Configuracion::where('clave', 'logo_colegio')
-                ->where('activo', true)
-                ->first();
-            
-            // Si existe la configuración y tiene valor, usarlo
-            if ($configuracion && !empty($configuracion->valor)) {
-                $logoPath = $configuracion->valor;
-            } else {
-                // Si no existe o está vacío, usar valor por defecto
-                $logoPath = '/images/logos/logo-colegio.png';
-            }
-        } catch (\Exception $e) {
-            // Si hay error de conexión a BD, usar valor por defecto
-            $logoPath = 'images/logos/logo-colegio.svg';
-        }
-        
-        // Si es una ruta de storage, convertirla a URL accesible
-        if (str_starts_with($logoPath, 'configuraciones/')) {
-            return \Illuminate\Support\Facades\Storage::url($logoPath);
-        }
-        
-        // Si es una ruta de images/, usar asset()
-        if (str_starts_with($logoPath, 'images/')) {
-            return asset($logoPath);
-        }
-        
-        return $logoPath;
+        return \App\Models\Configuracion::obtenerUrlLogo();
     }
 }
 

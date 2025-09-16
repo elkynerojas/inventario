@@ -170,15 +170,20 @@ class ConfiguracionController extends Controller
         
         // Procesar archivo si es tipo file
         if ($request->tipo === 'file' && $request->hasFile('archivo')) {
-            // Eliminar archivo anterior si existe
-            if ($configuracione->valor && Storage::disk('public')->exists($configuracione->valor)) {
-                Storage::disk('public')->delete($configuracione->valor);
+            // Manejo especial para el logo del colegio
+            if ($configuracione->clave === 'logo_colegio') {
+                $this->procesarLogoColegio($request, $configuracione, $data);
+            } else {
+                // Eliminar archivo anterior si existe
+                if ($configuracione->valor && Storage::disk('public')->exists($configuracione->valor)) {
+                    Storage::disk('public')->delete($configuracione->valor);
+                }
+                
+                $archivo = $request->file('archivo');
+                $nombreArchivo = time() . '_' . $archivo->getClientOriginalName();
+                $ruta = $archivo->storeAs('configuraciones', $nombreArchivo, 'public');
+                $data['valor'] = $ruta;
             }
-            
-            $archivo = $request->file('archivo');
-            $nombreArchivo = time() . '_' . $archivo->getClientOriginalName();
-            $ruta = $archivo->storeAs('configuraciones', $nombreArchivo, 'public');
-            $data['valor'] = $ruta;
         } elseif ($request->tipo === 'file' && !$request->hasFile('archivo')) {
             // Mantener el archivo actual si no se sube uno nuevo
             $data['valor'] = $configuracione->valor;
@@ -364,6 +369,60 @@ class ConfiguracionController extends Controller
             return Storage::url($rutaArchivo);
         }
 
+        return null;
+    }
+
+    /**
+     * Procesar la subida del logo del colegio
+     */
+    private function procesarLogoColegio(Request $request, Configuracion $configuracion, array &$data)
+    {
+        $archivo = $request->file('archivo');
+        
+        // Validar que sea una imagen
+        $request->validate([
+            'archivo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        ]);
+        
+        // Crear directorio si no existe
+        $directorioLogos = public_path('images/logos');
+        if (!file_exists($directorioLogos)) {
+            mkdir($directorioLogos, 0755, true);
+        }
+        
+        // Eliminar archivo anterior si existe
+        if ($configuracion->valor) {
+            $rutaAnterior = $this->obtenerRutaCompletaLogo($configuracion->valor);
+            if ($rutaAnterior && file_exists($rutaAnterior)) {
+                unlink($rutaAnterior);
+            }
+        }
+        
+        // Generar nombre único para el archivo
+        $extension = $archivo->getClientOriginalExtension();
+        $nombreArchivo = 'logo-colegio-actual.' . $extension;
+        $rutaCompleta = $directorioLogos . '/' . $nombreArchivo;
+        
+        // Mover el archivo
+        $archivo->move($directorioLogos, $nombreArchivo);
+        
+        // Guardar la ruta relativa en la configuración
+        $data['valor'] = 'images/logos/' . $nombreArchivo;
+    }
+
+    /**
+     * Obtener la ruta completa del logo para eliminación
+     */
+    private function obtenerRutaCompletaLogo($rutaRelativa)
+    {
+        if (str_starts_with($rutaRelativa, 'images/logos/')) {
+            return public_path($rutaRelativa);
+        }
+        
+        if (str_starts_with($rutaRelativa, 'configuraciones/')) {
+            return storage_path('app/public/' . $rutaRelativa);
+        }
+        
         return null;
     }
 }
