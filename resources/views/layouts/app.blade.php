@@ -54,6 +54,19 @@
                         </a>
                     </li>
                     @if(auth()->user()->esAdmin())
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-people"></i> Usuarios
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ route('usuarios.index') }}">
+                                <i class="bi bi-list-ul"></i> Gestionar Usuarios
+                            </a></li>
+                            <li><a class="dropdown-item" href="{{ route('roles.index') }}">
+                                <i class="bi bi-person-badge"></i> Gestionar Roles
+                            </a></li>
+                        </ul>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('configuraciones.index') }}">
                             <i class="bi bi-gear"></i> Configuración

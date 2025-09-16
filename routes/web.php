@@ -7,6 +7,8 @@ use App\Http\Controllers\ConfiguracionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\RolController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -53,6 +55,16 @@ Route::middleware(['auth'])->group(function () {
         Route::post('configuraciones/restaurar-defecto', [ConfiguracionController::class, 'restaurarDefecto'])->name('configuraciones.restaurar-defecto');
         Route::get('configuraciones/exportar', [ConfiguracionController::class, 'exportar'])->name('configuraciones.exportar');
         Route::post('configuraciones/importar', [ConfiguracionController::class, 'importar'])->name('configuraciones.importar');
+    });
+
+    // Rutas de gestión de usuarios (solo para administradores)
+    Route::middleware(['auth'])->group(function () {
+        Route::resource('usuarios', UserController::class);
+        Route::get('usuarios/{usuario}/reset-password', [UserController::class, 'showResetPassword'])->name('usuarios.reset-password');
+        Route::patch('usuarios/{usuario}/reset-password', [UserController::class, 'resetPassword'])->name('usuarios.reset-password');
+        
+        // Rutas de gestión de roles
+        Route::resource('roles', RolController::class);
     });
 });
 
