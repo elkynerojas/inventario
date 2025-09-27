@@ -123,18 +123,18 @@
                                     </tr>
                                     <tr>
                                         <td><code>documento</code></td>
-                                        <td><span class="badge bg-secondary">No</span></td>
-                                        <td>Número de documento</td>
+                                        <td><span class="badge bg-danger">Sí</span></td>
+                                        <td>Número de documento (5-20 caracteres, solo números y letras)</td>
                                     </tr>
                                     <tr>
                                         <td><code>rol</code></td>
                                         <td><span class="badge bg-secondary">No</span></td>
-                                        <td>admin, estudiante, profesor</td>
+                                        <td>admin, estudiante, profesor, administrativo, otro</td>
                                     </tr>
                                     <tr>
                                         <td><code>password</code></td>
                                         <td><span class="badge bg-secondary">No</span></td>
-                                        <td>Contraseña (por defecto: password123)</td>
+                                        <td>Contraseña (por defecto: el mismo documento)</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -143,9 +143,13 @@
                         <div class="alert alert-info mt-3">
                             <h6><i class="bi bi-lightbulb"></i> Consejos:</h6>
                             <ul class="mb-0">
+                                <li>El documento es obligatorio y debe ser único</li>
+                                <li>El documento debe tener entre 5 y 20 caracteres</li>
+                                <li>El documento solo puede contener números y letras (sin espacios)</li>
                                 <li>Si no especificas un rol, se asignará "estudiante" por defecto</li>
-                                <li>Si no especificas una contraseña, se usará "password123"</li>
+                                <li>Si no especificas una contraseña, se usará el mismo documento</li>
                                 <li>Los emails y documentos deben ser únicos</li>
+                                <li>Los roles deben existir en la base de datos</li>
                                 <li>Las filas con errores se omitirán automáticamente</li>
                             </ul>
                         </div>
@@ -199,7 +203,7 @@
                                     <tr>
                                         <td>Carlos López</td>
                                         <td>carlos.lopez@email.com</td>
-                                        <td></td>
+                                        <td>CC12345678</td>
                                         <td>admin</td>
                                         <td>admin123</td>
                                     </tr>

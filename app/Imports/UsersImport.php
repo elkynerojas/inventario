@@ -25,8 +25,8 @@ class UsersImport implements ToModel, WithHeadingRow, SkipsOnError, SkipsOnFailu
     public function model(array $row)
     {
         // Validar que los campos requeridos estén presentes
-        if (empty($row['nombre']) || empty($row['email'])) {
-            $this->customErrors[] = "Fila " . ($this->importedCount + 2) . ": Nombre y email son obligatorios";
+        if (empty($row['nombre']) || empty($row['email']) || empty($row['documento'])) {
+            $this->customErrors[] = "Fila " . ($this->importedCount + 2) . ": Nombre, email y documento son obligatorios";
             return null;
         }
 
@@ -42,34 +42,55 @@ class UsersImport implements ToModel, WithHeadingRow, SkipsOnError, SkipsOnFailu
             return null;
         }
 
-        // Verificar si el documento ya existe (si se proporciona)
-        if (!empty($row['documento']) && User::where('documento', $row['documento'])->exists()) {
-            $this->customErrors[] = "Fila " . ($this->importedCount + 2) . ": El documento ya existe: " . $row['documento'];
+        // Validar formato del documento (solo números y letras, sin espacios)
+        $documento = trim($row['documento']);
+        if (!preg_match('/^[a-zA-Z0-9]+$/', $documento)) {
+            $this->customErrors[] = "Fila " . ($this->importedCount + 2) . ": El documento debe contener solo números y letras (sin espacios): " . $row['documento'];
+            return null;
+        }
+
+        // Verificar longitud del documento
+        if (strlen($documento) < 5 || strlen($documento) > 20) {
+            $this->customErrors[] = "Fila " . ($this->importedCount + 2) . ": El documento debe tener entre 5 y 20 caracteres: " . $row['documento'];
+            return null;
+        }
+
+        // Verificar si el documento ya existe
+        $usuarioExistente = User::where('documento', $documento)->first();
+        if ($usuarioExistente) {
+            $this->customErrors[] = "Fila " . ($this->importedCount + 2) . ": El documento '{$documento}' ya existe (usuario: {$usuarioExistente->name} - {$usuarioExistente->email})";
             return null;
         }
 
         // Obtener el rol
         $rol = null;
         if (!empty($row['rol'])) {
-            $rol = Rol::where('nombre', strtolower(trim($row['rol'])))->first();
+            $rolNombre = strtolower(trim($row['rol']));
+            $rol = Rol::where('nombre', $rolNombre)->first();
             if (!$rol) {
-                $this->customErrors[] = "Fila " . ($this->importedCount + 2) . ": Rol no válido: " . $row['rol'];
+                // Obtener roles válidos para el mensaje de error
+                $rolesValidos = Rol::pluck('nombre')->implode(', ');
+                $this->customErrors[] = "Fila " . ($this->importedCount + 2) . ": Rol no válido: '{$row['rol']}'. Roles válidos: {$rolesValidos}";
                 return null;
             }
         } else {
             // Rol por defecto: estudiante
             $rol = Rol::where('nombre', 'estudiante')->first();
+            if (!$rol) {
+                $this->customErrors[] = "Fila " . ($this->importedCount + 2) . ": No se encontró el rol por defecto 'estudiante' en la base de datos";
+                return null;
+            }
         }
 
-        // Generar contraseña por defecto si no se proporciona
-        $password = !empty($row['password']) ? $row['password'] : 'password123';
+        // Generar contraseña por defecto si no se proporciona (usar el documento)
+        $password = !empty($row['password']) ? $row['password'] : $documento;
 
         $this->importedCount++;
 
         return new User([
             'name' => trim($row['nombre']),
             'email' => trim($row['email']),
-            'documento' => !empty($row['documento']) ? trim($row['documento']) : null,
+            'documento' => $documento,
             'password' => Hash::make($password),
             'rol_id' => $rol->id,
         ]);
@@ -87,24 +108,34 @@ class UsersImport implements ToModel, WithHeadingRow, SkipsOnError, SkipsOnFailu
 
     public function rules(): array
     {
+        // Obtener roles válidos de la base de datos
+        $rolesValidos = Rol::pluck('nombre')->implode(',');
+        
         return [
             'nombre' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'documento' => 'nullable|string|max:20|unique:users,documento',
-            'rol' => 'nullable|string|in:admin,estudiante,profesor',
+            'documento' => 'required|string|min:5|max:20|regex:/^[a-zA-Z0-9]+$/|unique:users,documento',
+            'rol' => 'nullable|string|in:' . $rolesValidos,
             'password' => 'nullable|string|min:6',
         ];
     }
 
     public function customValidationMessages()
     {
+        // Obtener roles válidos de la base de datos
+        $rolesValidos = Rol::pluck('nombre')->implode(', ');
+        
         return [
             'nombre.required' => 'El nombre es obligatorio',
             'email.required' => 'El email es obligatorio',
             'email.email' => 'El email debe tener un formato válido',
             'email.unique' => 'El email ya existe en el sistema',
-            'documento.unique' => 'El documento ya existe en el sistema',
-            'rol.in' => 'El rol debe ser: admin, estudiante o profesor',
+            'documento.required' => 'El documento es obligatorio',
+            'documento.min' => 'El documento debe tener al menos 5 caracteres',
+            'documento.max' => 'El documento no puede tener más de 20 caracteres',
+            'documento.regex' => 'El documento debe contener solo números y letras (sin espacios)',
+            'documento.unique' => 'El documento ya existe en el sistema. Debe ser único.',
+            'rol.in' => 'El rol debe ser uno de los siguientes: ' . $rolesValidos,
             'password.min' => 'La contraseña debe tener al menos 6 caracteres',
         ];
     }

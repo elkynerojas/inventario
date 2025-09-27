@@ -29,7 +29,7 @@ class UsersTemplateExport implements FromArray, WithHeadings, WithStyles
             [
                 'Carlos López',
                 'carlos.lopez@email.com',
-                '',
+                'CC12345678',
                 'admin',
                 'admin123'
             ],
