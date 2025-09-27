@@ -53,6 +53,11 @@
                             <i class="bi bi-graph-up"></i> Reportes
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('importaciones.index') }}">
+                            <i class="bi bi-upload"></i> Importaciones
+                        </a>
+                    </li>
                     @if(auth()->user()->esAdmin())
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">

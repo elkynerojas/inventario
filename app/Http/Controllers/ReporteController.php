@@ -61,7 +61,7 @@ class ReporteController extends Controller
             $query->whereDate('fecha_compra', '<=', $request->fecha_hasta);
         }
 
-        $activos = $query->orderBy('id', 'desc')->paginate(20);
+        $activos = $query->with(['asignacionActiva.usuario'])->orderBy('id', 'desc')->paginate(20);
         $estadisticas = Activo::obtenerEstadisticas();
 
         // Obtener opciones para los selects
@@ -176,7 +176,7 @@ class ReporteController extends Controller
         }
 
         // Limitar la cantidad de registros para evitar problemas de memoria
-        $activos = $query->orderBy('id', 'desc')->limit(500)->get();
+        $activos = $query->with(['asignacionActiva.usuario'])->orderBy('id', 'desc')->limit(500)->get();
         $estadisticas = Activo::obtenerEstadisticas();
         
         // Calcular totales

@@ -228,4 +228,46 @@ class Activo extends Model
     {
         return $this->hasOne(BajaActivo::class)->latest();
     }
+
+    /**
+     * Accessor para obtener el código del responsable desde la asignación activa
+     */
+    public function getCodigoResponsableAttribute()
+    {
+        $asignacionActiva = $this->asignacionActiva;
+        if ($asignacionActiva && $asignacionActiva->usuario) {
+            return $asignacionActiva->usuario->codigo ?? null;
+        }
+        return $this->attributes['codigo_responsable'] ?? null;
+    }
+
+    /**
+     * Accessor para obtener el nombre del responsable desde la asignación activa
+     */
+    public function getNombreResponsableAttribute()
+    {
+        $asignacionActiva = $this->asignacionActiva;
+        if ($asignacionActiva && $asignacionActiva->usuario) {
+            return $asignacionActiva->usuario->name ?? null;
+        }
+        return $this->attributes['nombre_responsable'] ?? null;
+    }
+
+    /**
+     * Obtener estadísticas de asignaciones del activo
+     */
+    public function estadisticasAsignaciones(): array
+    {
+        $totalAsignaciones = $this->asignaciones()->count();
+        $asignacionesActivas = $this->asignaciones()->where('estado', 'activa')->count();
+        $asignacionesDevueltas = $this->asignaciones()->where('estado', 'devuelta')->count();
+        $asignacionesPerdidas = $this->asignaciones()->where('estado', 'perdida')->count();
+
+        return [
+            'total_asignaciones' => $totalAsignaciones,
+            'asignaciones_activas' => $asignacionesActivas,
+            'asignaciones_devueltas' => $asignacionesDevueltas,
+            'asignaciones_perdidas' => $asignacionesPerdidas,
+        ];
+    }
 }

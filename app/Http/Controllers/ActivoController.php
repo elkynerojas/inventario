@@ -55,7 +55,7 @@ class ActivoController extends Controller
             $query->whereDate('fecha_compra', '<=', $request->fecha_hasta);
         }
 
-        $activos = $query->orderBy('id', 'asc')->paginate(20);
+        $activos = $query->with(['asignacionActiva.usuario'])->orderBy('id', 'asc')->paginate(20);
 
         // Obtener opciones para los selects
         $ubicaciones = Activo::select('ubicacion')
@@ -130,6 +130,7 @@ class ActivoController extends Controller
      */
     public function show(Activo $activo): View
     {
+        $activo->load(['asignacionActiva.usuario']);
         return view('activos.show', compact('activo'));
     }
 
@@ -138,6 +139,7 @@ class ActivoController extends Controller
      */
     public function edit(Activo $activo): View
     {
+        $activo->load(['asignacionActiva.usuario']);
         $activoDadoDeBaja = $activo->tieneBaja() || $activo->estado === 'dado de baja';
         return view('activos.edit', compact('activo', 'activoDadoDeBaja'));
     }

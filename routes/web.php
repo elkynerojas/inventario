@@ -5,6 +5,7 @@ use App\Http\Controllers\AsignacionActivoController;
 use App\Http\Controllers\BajaActivoController;
 use App\Http\Controllers\ConfiguracionController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ImportacionActivoController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
@@ -47,6 +48,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('reportes/excel', [ReporteController::class, 'excel'])->name('reportes.excel');
     Route::get('reportes/pdf', [ReporteController::class, 'pdf'])->name('reportes.pdf');
     Route::get('reportes/estadisticas', [ReporteController::class, 'estadisticas'])->name('reportes.estadisticas');
+    
+    // Rutas de importaciones de activos
+    Route::resource('importaciones', ImportacionActivoController::class)->except(['edit', 'update', 'destroy']);
+    Route::get('importaciones/{importacion}/estado', [ImportacionActivoController::class, 'estado'])->name('importaciones.estado');
+    Route::get('importaciones/plantilla/descargar', [ImportacionActivoController::class, 'plantilla'])->name('importaciones.plantilla');
     
     // Rutas de configuración (solo para administradores)
     Route::middleware(['auth'])->group(function () {
