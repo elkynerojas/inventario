@@ -10,9 +10,14 @@
             <div class="card-header">
                 <div class="d-flex justify-content-between align-items-center">
                     <h2 class="mb-0"><i class="bi bi-people"></i> Gestión de Usuarios</h2>
-                    <a href="{{ route('usuarios.create') }}" class="btn btn-primary">
-                        <i class="bi bi-plus-circle"></i> Nuevo Usuario
-                    </a>
+                    <div class="btn-group" role="group">
+                        <a href="{{ route('usuarios.import') }}" class="btn btn-success">
+                            <i class="bi bi-upload"></i> Importar Usuarios
+                        </a>
+                        <a href="{{ route('usuarios.create') }}" class="btn btn-primary">
+                            <i class="bi bi-plus-circle"></i> Nuevo Usuario
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

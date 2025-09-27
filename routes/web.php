@@ -37,9 +37,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('activos/{activo}/historial-asignaciones', [AsignacionActivoController::class, 'historialActivo'])->name('asignaciones.historial-activo');
 
     // Rutas de bajas de activos
-    Route::resource('bajas', BajaActivoController::class)->except(['edit', 'update', 'destroy']);
-    Route::get('activos/{activo}/baja', [BajaActivoController::class, 'create'])->name('bajas.create');
-    Route::post('activos/{activo}/baja', [BajaActivoController::class, 'store'])->name('bajas.store');
+    Route::get('activos/{activo}/baja', [BajaActivoController::class, 'create'])->name('activos.baja.create');
+    Route::post('activos/{activo}/baja', [BajaActivoController::class, 'store'])->name('activos.baja.store');
+    Route::resource('bajas', BajaActivoController::class)->except(['edit', 'update', 'destroy', 'create', 'store']);
     Route::get('bajas/{baja}/acta', [BajaActivoController::class, 'generarActa'])->name('bajas.acta');
     
     // Rutas de reportes
@@ -59,9 +59,15 @@ Route::middleware(['auth'])->group(function () {
 
     // Rutas de gestión de usuarios (solo para administradores)
     Route::middleware(['auth'])->group(function () {
-        Route::resource('usuarios', UserController::class);
+        // Rutas específicas ANTES que resource (para evitar conflictos con {usuario})
+        Route::get('usuarios/importar', [UserController::class, 'showImport'])->name('usuarios.import');
+        Route::post('usuarios/importar', [UserController::class, 'import'])->name('usuarios.import');
+        Route::get('usuarios/plantilla', [UserController::class, 'downloadTemplate'])->name('usuarios.template');
         Route::get('usuarios/{usuario}/reset-password', [UserController::class, 'showResetPassword'])->name('usuarios.reset-password');
         Route::patch('usuarios/{usuario}/reset-password', [UserController::class, 'resetPassword'])->name('usuarios.reset-password');
+        
+        // Resource routes
+        Route::resource('usuarios', UserController::class);
         
         // Rutas de gestión de roles
         Route::resource('roles', RolController::class);

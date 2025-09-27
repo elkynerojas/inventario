@@ -9,6 +9,9 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\ResetPasswordRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\UsersImport;
+use App\Exports\UsersTemplateExport;
 
 class UserController extends Controller
 {
@@ -148,5 +151,53 @@ class UserController extends Controller
 
         return redirect()->route('usuarios.index')
             ->with('success', 'Contraseña restablecida exitosamente.');
+    }
+
+    /**
+     * Mostrar formulario para importar usuarios
+     */
+    public function showImport()
+    {
+        $roles = Rol::orderBy('nombre')->get();
+        return view('usuarios.import', compact('roles'));
+    }
+
+    /**
+     * Procesar importación de usuarios desde Excel
+     */
+    public function import(Request $request)
+    {
+        $request->validate([
+            'archivo' => 'required|file|mimes:xlsx,xls,csv|max:10240', // 10MB máximo
+        ]);
+
+        try {
+            $import = new UsersImport();
+            $result = Excel::import($import, $request->file('archivo'));
+
+            $importados = $import->getImportedCount();
+            $errores = $import->getErrors();
+
+            if (count($errores) > 0) {
+                return redirect()->route('usuarios.import')
+                    ->with('warning', "Se importaron {$importados} usuarios correctamente, pero hubo " . count($errores) . " errores.")
+                    ->with('errores', $errores);
+            }
+
+            return redirect()->route('usuarios.index')
+                ->with('success', "Se importaron exitosamente {$importados} usuarios.");
+
+        } catch (\Exception $e) {
+            return redirect()->route('usuarios.import')
+                ->with('error', 'Error al procesar el archivo: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Descargar plantilla de Excel para importación
+     */
+    public function downloadTemplate()
+    {
+        return Excel::download(new UsersTemplateExport, 'plantilla_usuarios.xlsx');
     }
 }
