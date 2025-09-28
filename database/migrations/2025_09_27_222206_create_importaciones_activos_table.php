@@ -20,8 +20,8 @@ return new class extends Migration
             $table->integer('registros_exitosos')->default(0);
             $table->integer('registros_fallidos')->default(0);
             $table->enum('estado', ['pendiente', 'procesando', 'completado', 'fallido'])->default('pendiente');
-            $table->text('errores')->nullable();
-            $table->text('observaciones')->nullable();
+            $table->longText('errores')->nullable();
+            $table->longText('observaciones')->nullable();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });

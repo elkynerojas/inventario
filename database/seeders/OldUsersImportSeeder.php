@@ -30,31 +30,7 @@ class OldUsersImportSeeder extends Seeder
                 'password' => 'admin123', // Contraseña conocida para regenerar hash
                 'rol_id' => $rolAdmin->id,
                 'created_at' => '2025-09-01 22:05:13',
-            ],
-            [
-                'id' => 2,
-                'name' => 'admin123',
-                'email' => 'admin@gmail.com',
-                'password' => 'admin123', // Contraseña conocida para regenerar hash
-                'rol_id' => $rolAdmin->id,
-                'created_at' => '2025-09-01 22:07:12',
-            ],
-            [
-                'id' => 3,
-                'name' => 'Estudiante Demo',
-                'email' => 'estudiante@demo.com',
-                'password' => 'estudiante123', // Contraseña conocida para regenerar hash
-                'rol_id' => $rolEstudiante->id,
-                'created_at' => '2025-09-01 22:07:49',
-            ],
-            [
-                'id' => 4,
-                'name' => 'Profesor Demo',
-                'email' => 'profesor@demo.com',
-                'password' => 'profesor123', // Contraseña conocida para regenerar hash
-                'rol_id' => $rolProfesor->id,
-                'created_at' => '2025-09-01 22:07:49',
-            ],
+            ]
         ];
 
         foreach ($usuariosOriginales as $usuarioData) {
