@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ActivoController;
+use App\Http\Controllers\ActaAsignacionController;
 use App\Http\Controllers\AsignacionActivoController;
 use App\Http\Controllers\BajaActivoController;
 use App\Http\Controllers\ConfiguracionController;
@@ -77,6 +78,11 @@ Route::middleware(['auth'])->group(function () {
         
         // Rutas de gestión de roles
         Route::resource('roles', RolController::class);
+        
+        // Rutas para actas de asignación
+        Route::get('actas', [ActaAsignacionController::class, 'index'])->name('actas.index');
+        Route::get('actas/vista-previa', [ActaAsignacionController::class, 'vistaPrevia'])->name('actas.vista-previa');
+        Route::get('actas/generar', [ActaAsignacionController::class, 'generar'])->name('actas.generar');
     });
 });
 

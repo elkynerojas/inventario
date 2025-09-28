@@ -10,9 +10,14 @@
                 <h5 class="mb-0">
                     <i class="bi bi-person-check"></i> Asignaciones de Activos
                 </h5>
-                <a href="{{ route('asignaciones.create') }}" class="btn btn-primary">
-                    <i class="bi bi-plus-circle"></i> Nueva Asignación
-                </a>
+                <div class="d-flex gap-2">
+                    <a href="{{ route('actas.index') }}" class="btn btn-success">
+                        <i class="bi bi-file-earmark-text"></i> Generar Actas
+                    </a>
+                    <a href="{{ route('asignaciones.create') }}" class="btn btn-primary">
+                        <i class="bi bi-plus-circle"></i> Nueva Asignación
+                    </a>
+                </div>
             </div>
             <div class="card-body">
                 <!-- Estadísticas -->
