@@ -154,19 +154,21 @@
                                             <a href="{{ route('asignaciones.show', ['asignacione' => $asignacion->id]) }}" class="btn btn-sm btn-outline-primary">
                                                 <i class="bi bi-eye"></i>
                                             </a>
-                                            @if($asignacion->estaActiva())
-                                                <a href="{{ route('asignaciones.edit', ['asignacione' => $asignacion->id]) }}" class="btn btn-sm btn-outline-warning">
-                                                    <i class="bi bi-pencil"></i>
-                                                </a>
-                                            @endif
-                                            @if(!$asignacion->estaActiva())
-                                                <form method="POST" action="{{ route('asignaciones.destroy', $asignacion) }}" style="display: inline;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Está seguro de eliminar esta asignación?')">
-                                                        <i class="bi bi-trash"></i>
-                                                    </button>
-                                                </form>
+                                            @if(auth()->user()->esAdmin())
+                                                @if($asignacion->estaActiva())
+                                                    <a href="{{ route('asignaciones.edit', ['asignacione' => $asignacion->id]) }}" class="btn btn-sm btn-outline-warning">
+                                                        <i class="bi bi-pencil"></i>
+                                                    </a>
+                                                @endif
+                                                @if(!$asignacion->estaActiva())
+                                                    <form method="POST" action="{{ route('asignaciones.destroy', $asignacion) }}" style="display: inline;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Está seguro de eliminar esta asignación?')">
+                                                            <i class="bi bi-trash"></i>
+                                                        </button>
+                                                    </form>
+                                                @endif
                                             @endif
                                         </div>
                                     </td>
