@@ -11,7 +11,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        $middleware->alias([
+            'user.permissions' => \App\Http\Middleware\CheckUserPermissions::class,
+            'admin.only' => \App\Http\Middleware\AdminOnly::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

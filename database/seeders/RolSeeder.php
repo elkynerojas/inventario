@@ -17,6 +17,10 @@ class RolSeeder extends Seeder
             ['nombre' => 'admin'],
             ['nombre' => 'estudiante'],
             ['nombre' => 'profesor'],
+            ['nombre' => 'rector(a)'],
+            ['nombre' => 'administrativo'],
+            ['nombre' => 'otro'],
+           
         ];
 
         foreach ($roles as $rol) {

@@ -1,0 +1,637 @@
+/* Estilos principales del Sistema de Inventario */
+:root {
+    --primary-color: #dc3545;
+    --primary-dark: #c82333;
+    --primary-light: #e74c3c;
+    --secondary-color: #6c757d;
+    --success-color: #28a745;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --info-color: #17a2b8;
+    --light-bg: #f8f9fa;
+    --white: #ffffff;
+    --border-radius: 12px;
+    --shadow: 0 4px 15px rgba(0,0,0,0.1);
+    --shadow-hover: 0 8px 25px rgba(0,0,0,0.15);
+    --transition: all 0.3s ease;
+}
+
+body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.header-app {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    box-shadow: var(--shadow-hover);
+    padding: 1.5rem 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.header-logo {
+    max-width: 80px;
+    max-height: 80px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    border: 3px solid rgba(255,255,255,0.2);
+    object-fit: contain;
+    background: rgba(255,255,255,0.1);
+    padding: 5px;
+}
+
+.header-logo-placeholder {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    border: 3px solid rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.header-logo-placeholder i {
+    font-size: 2.5rem;
+    color: rgba(255,255,255,0.8);
+}
+
+.header-app h1 {
+    color: var(--white);
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    margin: 0.5rem 0 0.25rem 0;
+    font-size: 2.2rem;
+}
+
+.header-subtitle {
+    color: rgba(255,255,255,0.9);
+    font-size: 1.1rem;
+    margin: 0;
+    font-weight: 300;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+.navbar {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    box-shadow: var(--shadow);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: var(--white);
+    border: none;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+    color: var(--white);
+}
+
+.card {
+    border: none;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.table-responsive {
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+.table thead th {
+    background: var(--primary-color) !important;
+    color: var(--white) !important;
+    border: none;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+.badge-estado {
+    padding: 0.5em 1em;
+    font-weight: 600;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.badge-estado.bueno {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+}
+
+.badge-estado.regular {
+    background: linear-gradient(135deg, #ffc107, #fd7e14);
+    color: #212529;
+}
+
+.badge-estado.malo {
+    background: linear-gradient(135deg, #dc3545, #e83e8c);
+    color: white;
+}
+
+.badge-estado.dado-de-baja {
+    background: linear-gradient(135deg,rgb(241, 66, 81),rgb(224, 57, 65));
+    color: white;
+}
+
+/* ===== ESTILOS PERSONALIZADOS PARA PAGINACIÓN ===== */
+
+/* Contenedor principal de paginación */
+.pagination {
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+/* Enlaces de página */
+.pagination .page-link {
+    border: 1px solid #e3e6f0;
+    color: #5a5c69;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    margin: 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fc 100%);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    min-width: 2.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.5rem;
+}
+
+/* Efecto hover mejorado */
+.pagination .page-link:hover {
+    background: linear-gradient(135deg, #f8f9fc 0%, #e3e6f0 100%);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.15);
+}
+
+/* Página activa */
+.pagination .page-item.active .page-link {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    border-color: var(--primary-color);
+    color: white;
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+    transform: translateY(-1px);
+}
+
+/* Página deshabilitada */
+.pagination .page-item.disabled .page-link {
+    color: #adb5bd;
+    background: linear-gradient(135deg, #f8f9fc 0%, #e9ecef 100%);
+    border-color: #e9ecef;
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Paginación pequeña */
+.pagination-sm .page-link {
+    padding: 0.375rem 0.625rem;
+    font-size: 0.8rem;
+    min-width: 2rem;
+    border-radius: 0.375rem;
+}
+
+/* Íconos de navegación */
+.pagination-icon {
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1;
+    display: inline-block;
+    vertical-align: middle;
+    color: inherit;
+    transition: all 0.2s ease;
+}
+
+/* Efecto especial para íconos */
+.pagination .page-link:hover .pagination-icon {
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
+}
+
+/* Asegurar que los íconos se vean correctamente */
+.pagination .page-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.5rem;
+}
+
+/* Estilos específicos para íconos deshabilitados */
+.pagination .page-item.disabled .pagination-icon {
+    opacity: 0.5;
+    color: #adb5bd;
+}
+
+/* Mejorar la apariencia de los íconos en estado activo */
+.pagination .page-item.active .page-link .pagination-icon {
+    color: white;
+}
+
+/* Asegurar que los íconos mantengan su tamaño */
+.pagination-icon::before {
+    font-family: "bootstrap-icons";
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Información de resultados */
+.pagination-info {
+    color: #6c757d;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.pagination-info .fw-semibold {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* Contenedor de paginación con fondo */
+.card-footer {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fc 100%);
+    border-top: 1px solid #e3e6f0;
+    padding: 1.5rem;
+}
+
+/* Responsive para móviles */
+@media (max-width: 576px) {
+    .pagination {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .pagination-sm .page-link {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+        min-width: 1.75rem;
+    }
+    
+    .pagination-icon {
+        font-size: 0.75rem;
+    }
+    
+    .pagination-info {
+        font-size: 0.8rem;
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+}
+
+/* Animación de carga para paginación */
+.pagination .page-link:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Separadores de puntos */
+.pagination .page-item.disabled .page-link {
+    background: transparent;
+    border: none;
+    color: #adb5bd;
+    font-weight: bold;
+    padding: 0.5rem 0.25rem;
+}
+
+/* ===== ESTILOS ADICIONALES PARA TABLAS ===== */
+
+/* Mejoras en las tablas */
+.table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.table thead th {
+    background: linear-gradient(135deg, #f8f9fc 0%, #e3e6f0 100%);
+    border-bottom: 2px solid #e3e6f0;
+    font-weight: 600;
+    color: #5a5c69;
+    padding: 1rem 0.75rem;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.table tbody tr {
+    transition: all 0.2s ease;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(220, 53, 69, 0.05);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.table tbody td {
+    padding: 0.875rem 0.75rem;
+    border-bottom: 1px solid #f8f9fc;
+    vertical-align: middle;
+}
+
+/* Mejoras en los botones de acción */
+.btn-group .btn {
+    border-radius: 0.375rem;
+    margin: 0 1px;
+    transition: all 0.2s ease;
+}
+
+.btn-group .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Efecto de carga suave */
+.table-responsive {
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+svg.w-5 {
+    width: 25px;
+    height: 25px;
+}
+
+body > div.container-fluid.mt-4 > div > div > div:nth-child(3) > div > div.card-footer > nav > div.flex.justify-between.flex-1.sm\:hidden > a:nth-child(1) {
+    display: none;
+}
+
+body > div.container-fluid.mt-4 > div > div > div:nth-child(3) > div > div.card-footer > nav > div.flex.justify-between.flex-1.sm\:hidden > a.relative.inline-flex.items-center.px-4.py-2.ml-3.text-sm.font-medium.text-gray-700.bg-white.border.border-gray-300.leading-5.rounded-md.hover\:text-gray-500.focus\:outline-none.focus\:ring.ring-gray-300.focus\:border-blue-300.active\:bg-gray-100.active\:text-gray-700.transition.ease-in-out.duration-150.dark\:bg-gray-800.dark\:border-gray-600.dark\:text-gray-300.dark\:focus\:border-blue-700.dark\:active\:bg-gray-700.dark\:active\:text-gray-300 {
+    display: none;
+}
+
+body > div.container-fluid.mt-4 > div > div > div:nth-child(3) > div > div.card-footer > nav > div.hidden.sm\:flex-1.sm\:flex.sm\:items-center.sm\:justify-between > div:nth-child(1) {
+    display: none;
+}
+
+/* Dashboard Styles */
+.dashboard-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: none;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.dashboard-stat-card {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #0056b3 100%);
+    border: none;
+    color: white;
+    transition: transform 0.2s ease;
+}
+
+.dashboard-stat-card:hover {
+    transform: translateY(-2px);
+}
+
+.dashboard-stat-card.bg-success {
+    background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+}
+
+.dashboard-stat-card.bg-warning {
+    background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
+}
+
+.dashboard-stat-card.bg-danger {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+}
+
+.dashboard-icon {
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+}
+
+.dashboard-card:hover .dashboard-icon {
+    opacity: 1;
+}
+
+/* Quick access buttons */
+.quick-access-btn {
+    transition: all 0.2s ease;
+    border-radius: 0.5rem;
+}
+
+.quick-access-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Activity list */
+.activity-item {
+    border-left: 3px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.activity-item:hover {
+    border-left-color: var(--primary-color);
+    background-color: #f8f9fc;
+}
+
+/* Responsive dashboard */
+@media (max-width: 768px) {
+    .dashboard-stat-card {
+        margin-bottom: 1rem;
+    }
+    
+    .dashboard-card {
+        margin-bottom: 1rem;
+    }
+    
+    .quick-access-btn {
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* Estadísticas específicas */
+.stats-chart-container {
+    position: relative;
+    height: 300px;
+}
+
+.stats-table th {
+    background-color: #f8f9fc;
+    font-weight: 600;
+    border-top: none;
+}
+
+.stats-progress {
+    height: 20px;
+    border-radius: 10px;
+}
+
+.stats-progress .progress-bar {
+    border-radius: 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.stats-financial-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+}
+
+.stats-financial-card h3 {
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.stats-financial-card p {
+    opacity: 0.9;
+    margin-bottom: 0;
+}
+
+/* Gráficos responsivos */
+@media (max-width: 576px) {
+    .stats-chart-container {
+        height: 250px;
+    }
+    
+    .stats-financial-card h3 {
+        font-size: 1.5rem;
+    }
+    
+    .stats-table {
+        font-size: 0.875rem;
+    }
+}
+
+/* Estilos para filtros de activos */
+.filtros-container {
+    background: linear-gradient(135deg, #f8f9fc 0%, #e3e6f0 100%);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.filtros-container .form-label {
+    font-weight: 600;
+    color: #5a5c69;
+    margin-bottom: 0.5rem;
+}
+
+.filtros-container .form-select,
+.filtros-container .form-control {
+    border: 1px solid #d1d3e2;
+    border-radius: 0.375rem;
+    transition: all 0.2s ease;
+}
+
+.filtros-container .form-select:focus,
+.filtros-container .form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+}
+
+.filtros-container .btn {
+    border-radius: 0.375rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.filtros-container .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Indicadores de filtros activos */
+.filtro-activo {
+    background-color: #e3f2fd;
+    border-left: 4px solid var(--primary-color);
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-radius: 0.25rem;
+}
+
+.filtro-activo .badge {
+    background-color: var(--primary-color);
+}
+
+/* Responsive para filtros */
+@media (max-width: 768px) {
+    .filtros-container {
+        padding: 1rem;
+    }
+    
+    .filtros-container .col-md-2,
+    .filtros-container .col-md-4 {
+        margin-bottom: 1rem;
+    }
+    
+    .filtros-container .d-flex {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .filtros-container .btn {
+        width: 100%;
+    }
+}
+
+/* Animaciones para filtros */
+.filtros-container .form-select,
+.filtros-container .form-control {
+    transition: all 0.3s ease;
+}
+
+.filtros-container .form-select:hover,
+.filtros-container .form-control:hover {
+    border-color: #adb5bd;
+    transform: translateY(-1px);
+}
+
+/* Estilos para validación */
+.form-control:invalid,
+.form-select:invalid {
+    border-color: #dc3545;
+}
+
+.form-control:valid,
+.form-select:valid {
+    border-color: #28a745;
+}
+
+/* Contador de resultados */
+.resultados-count {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #0056b3 100%);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    display: inline-block;
+}

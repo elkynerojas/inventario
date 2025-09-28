@@ -1,0 +1,7 @@
+<svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="40" cy="40" r="35" fill="#ffffff" stroke="#ffffff" stroke-width="2"/>
+  <rect x="20" y="25" width="40" height="30" fill="#dc3545" rx="3"/>
+  <rect x="25" y="30" width="30" height="20" fill="#ffffff" rx="2"/>
+  <rect x="30" y="35" width="20" height="10" fill="#dc3545" rx="1"/>
+  <text x="40" y="65" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#ffffff">COLEGIO</text>
+</svg>

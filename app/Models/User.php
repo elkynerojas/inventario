@@ -22,6 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'rol_id',
+        'documento',
     ];
 
     /**
@@ -69,5 +70,60 @@ class User extends Authenticatable
     public function soloLectura(): bool
     {
         return $this->rol && in_array($this->rol->nombre, ['estudiante', 'profesor']);
+    }
+
+    /**
+     * Relación con asignaciones de activos (como usuario asignado)
+     */
+    public function asignacionesActivos()
+    {
+        return $this->hasMany(AsignacionActivo::class, 'user_id');
+    }
+
+    /**
+     * Relación con asignaciones realizadas (como usuario que asigna)
+     */
+    public function asignacionesRealizadas()
+    {
+        return $this->hasMany(AsignacionActivo::class, 'asignado_por');
+    }
+
+    /**
+     * Obtener asignaciones activas del usuario
+     */
+    public function asignacionesActivas()
+    {
+        return $this->asignacionesActivos()->activas();
+    }
+
+    /**
+     * Obtener activos asignados al usuario
+     */
+    public function activosAsignados()
+    {
+        return $this->hasManyThrough(
+            Activo::class,
+            AsignacionActivo::class,
+            'user_id',
+            'id',
+            'id',
+            'activo_id'
+        )->where('asignaciones_activos.estado', 'activa');
+    }
+
+    /**
+     * Verificar si el usuario tiene activos asignados
+     */
+    public function tieneActivosAsignados(): bool
+    {
+        return $this->asignacionesActivas()->exists();
+    }
+
+    /**
+     * Obtener cantidad de activos asignados
+     */
+    public function cantidadActivosAsignados(): int
+    {
+        return $this->asignacionesActivas()->count();
     }
 }

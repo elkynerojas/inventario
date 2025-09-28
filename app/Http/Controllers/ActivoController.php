@@ -17,29 +17,60 @@ class ActivoController extends Controller
     {
         $query = Activo::query();
 
-        // Aplicar búsqueda si existe
+        // Aplicar búsqueda general si existe
         if ($request->filled('buscar')) {
             $query->buscar($request->buscar);
         }
 
-        // Aplicar filtros específicos
-        if ($request->filled('filtro') && $request->filled('parametro')) {
-            switch ($request->filtro) {
-                case 'estado':
-                    $query->porEstado($request->parametro);
-                    break;
-                case 'ubicacion':
-                    $query->porUbicacion($request->parametro);
-                    break;
-                case 'responsable':
-                    $query->porResponsable($request->parametro);
-                    break;
-            }
+        // Filtro por estado
+        if ($request->filled('estado')) {
+            $query->where('estado', $request->estado);
         }
 
-        $activos = $query->orderBy('id', 'asc')->paginate(20);
+        // Filtro por ubicación
+        if ($request->filled('ubicacion')) {
+            $query->where('ubicacion', $request->ubicacion);
+        }
 
-        return view('activos.index', compact('activos'));
+        // Filtro por responsable
+        if ($request->filled('responsable')) {
+            $query->where('nombre_responsable', $request->responsable);
+        }
+
+        // Filtro por rango de valor
+        if ($request->filled('valor_minimo')) {
+            $query->where('valor_compra', '>=', $request->valor_minimo);
+        }
+
+        if ($request->filled('valor_maximo')) {
+            $query->where('valor_compra', '<=', $request->valor_maximo);
+        }
+
+        // Filtro por rango de fechas
+        if ($request->filled('fecha_desde')) {
+            $query->whereDate('fecha_compra', '>=', $request->fecha_desde);
+        }
+
+        if ($request->filled('fecha_hasta')) {
+            $query->whereDate('fecha_compra', '<=', $request->fecha_hasta);
+        }
+
+        $activos = $query->with(['asignacionActiva.usuario'])->orderBy('id', 'asc')->paginate(20);
+
+        // Obtener opciones para los selects
+        $ubicaciones = Activo::select('ubicacion')
+            ->distinct()
+            ->whereNotNull('ubicacion')
+            ->orderBy('ubicacion')
+            ->pluck('ubicacion');
+
+        $responsables = Activo::select('nombre_responsable')
+            ->distinct()
+            ->whereNotNull('nombre_responsable')
+            ->orderBy('nombre_responsable')
+            ->pluck('nombre_responsable');
+
+        return view('activos.index', compact('activos', 'ubicaciones', 'responsables'));
     }
 
     /**
@@ -99,6 +130,7 @@ class ActivoController extends Controller
      */
     public function show(Activo $activo): View
     {
+        $activo->load(['asignacionActiva.usuario']);
         return view('activos.show', compact('activo'));
     }
 
@@ -107,7 +139,9 @@ class ActivoController extends Controller
      */
     public function edit(Activo $activo): View
     {
-        return view('activos.edit', compact('activo'));
+        $activo->load(['asignacionActiva.usuario']);
+        $activoDadoDeBaja = $activo->tieneBaja() || $activo->estado === 'dado de baja';
+        return view('activos.edit', compact('activo', 'activoDadoDeBaja'));
     }
 
     /**
@@ -115,6 +149,12 @@ class ActivoController extends Controller
      */
     public function update(Request $request, Activo $activo): RedirectResponse
     {
+        // Verificar si el activo está dado de baja
+        if ($activo->tieneBaja() || $activo->estado === 'dado de baja') {
+            return redirect()->route('activos.show', $activo)
+                ->with('error', 'No se puede editar un activo que ha sido dado de baja.');
+        }
+
         $validated = $request->validate([
             'codigo' => 'required|string|max:50|unique:activos,codigo,' . $activo->id,
             'nombre' => 'required|string|max:200',

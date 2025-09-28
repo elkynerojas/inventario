@@ -19,13 +19,13 @@
                     @if ($paginator->onFirstPage())
                         <li class="page-item disabled">
                             <span class="page-link">
-                                <span class="pagination-arrow">‹</span>
+                                <i class="bi bi-chevron-left pagination-icon"></i>
                             </span>
                         </li>
                     @else
                         <li class="page-item">
                             <a class="page-link" href="{{ $paginator->previousPageUrl() }}" rel="prev">
-                                <span class="pagination-arrow">‹</span>
+                                <i class="bi bi-chevron-left pagination-icon"></i>
                             </a>
                         </li>
                     @endif
@@ -57,13 +57,13 @@
                     @if ($paginator->hasMorePages())
                         <li class="page-item">
                             <a class="page-link" href="{{ $paginator->nextPageUrl() }}" rel="next">
-                                <span class="pagination-arrow">›</span>
+                                <i class="bi bi-chevron-right pagination-icon"></i>
                             </a>
                         </li>
                     @else
                         <li class="page-item disabled">
                             <span class="page-link">
-                                <span class="pagination-arrow">›</span>
+                                <i class="bi bi-chevron-right pagination-icon"></i>
                             </span>
                         </li>
                     @endif

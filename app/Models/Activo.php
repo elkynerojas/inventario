@@ -149,4 +149,125 @@ class Activo extends Model
     {
         return $this->estado === 'dado de baja';
     }
+
+    /**
+     * Relación con asignaciones
+     */
+    public function asignaciones()
+    {
+        return $this->hasMany(AsignacionActivo::class);
+    }
+
+    /**
+     * Obtener asignación activa actual
+     */
+    public function asignacionActiva()
+    {
+        return $this->hasOne(AsignacionActivo::class)->activas();
+    }
+
+    /**
+     * Obtener usuario actual asignado
+     */
+    public function usuarioAsignado()
+    {
+        return $this->hasOneThrough(
+            User::class,
+            AsignacionActivo::class,
+            'activo_id',
+            'id',
+            'id',
+            'user_id'
+        )->where('asignaciones_activos.estado', 'activa');
+    }
+
+    /**
+     * Verificar si el activo está asignado
+     */
+    public function estaAsignado(): bool
+    {
+        return $this->asignacionActiva()->exists();
+    }
+
+    /**
+     * Verificar si el activo está disponible para asignación
+     */
+    public function estaDisponible(): bool
+    {
+        return !$this->estaAsignado() && !$this->estaDadoDeBaja() && !$this->tieneBaja();
+    }
+
+    /**
+     * Obtener historial de asignaciones
+     */
+    public function historialAsignaciones()
+    {
+        return $this->asignaciones()->with(['usuario', 'asignadoPor'])->orderBy('fecha_asignacion', 'desc');
+    }
+
+    /**
+     * Relación con bajas
+     */
+    public function bajas()
+    {
+        return $this->hasMany(BajaActivo::class);
+    }
+
+    /**
+     * Verificar si el activo tiene una baja registrada
+     */
+    public function tieneBaja(): bool
+    {
+        return $this->bajas()->exists();
+    }
+
+    /**
+     * Obtener la última baja del activo
+     */
+    public function ultimaBaja()
+    {
+        return $this->hasOne(BajaActivo::class)->latest();
+    }
+
+    /**
+     * Accessor para obtener el código del responsable desde la asignación activa
+     */
+    public function getCodigoResponsableAttribute()
+    {
+        $asignacionActiva = $this->asignacionActiva;
+        if ($asignacionActiva && $asignacionActiva->usuario) {
+            return $asignacionActiva->usuario->codigo ?? null;
+        }
+        return $this->attributes['codigo_responsable'] ?? null;
+    }
+
+    /**
+     * Accessor para obtener el nombre del responsable desde la asignación activa
+     */
+    public function getNombreResponsableAttribute()
+    {
+        $asignacionActiva = $this->asignacionActiva;
+        if ($asignacionActiva && $asignacionActiva->usuario) {
+            return $asignacionActiva->usuario->name ?? null;
+        }
+        return $this->attributes['nombre_responsable'] ?? null;
+    }
+
+    /**
+     * Obtener estadísticas de asignaciones del activo
+     */
+    public function estadisticasAsignaciones(): array
+    {
+        $totalAsignaciones = $this->asignaciones()->count();
+        $asignacionesActivas = $this->asignaciones()->where('estado', 'activa')->count();
+        $asignacionesDevueltas = $this->asignaciones()->where('estado', 'devuelta')->count();
+        $asignacionesPerdidas = $this->asignaciones()->where('estado', 'perdida')->count();
+
+        return [
+            'total_asignaciones' => $totalAsignaciones,
+            'asignaciones_activas' => $asignacionesActivas,
+            'asignaciones_devueltas' => $asignacionesDevueltas,
+            'asignaciones_perdidas' => $asignacionesPerdidas,
+        ];
+    }
 }

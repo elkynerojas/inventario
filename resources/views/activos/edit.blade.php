@@ -12,6 +12,16 @@
                     </a>
                 </div>
                 <div class="card-body">
+                    @if($activoDadoDeBaja)
+                        <div class="alert alert-warning">
+                            <h5><i class="bi bi-exclamation-triangle"></i> Activo Dado de Baja</h5>
+                            <p class="mb-0">
+                                Este activo ha sido dado de baja y no puede ser editado. 
+                                Todos los campos están deshabilitados para mantener la integridad de los datos históricos.
+                            </p>
+                        </div>
+                    @endif
+                    
                     <form action="{{ route('activos.update', $activo) }}" method="POST">
                         @csrf
                         @method('PUT')
@@ -24,7 +34,8 @@
                                 <div class="mb-3">
                                     <label for="codigo" class="form-label">Código *</label>
                                     <input type="text" class="form-control @error('codigo') is-invalid @enderror" 
-                                           id="codigo" name="codigo" value="{{ old('codigo', $activo->codigo) }}" required>
+                                           id="codigo" name="codigo" value="{{ old('codigo', $activo->codigo) }}" 
+                                           {{ $activoDadoDeBaja ? 'disabled' : 'required' }}>
                                     @error('codigo')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -33,7 +44,8 @@
                                 <div class="mb-3">
                                     <label for="nombre" class="form-label">Nombre *</label>
                                     <input type="text" class="form-control @error('nombre') is-invalid @enderror" 
-                                           id="nombre" name="nombre" value="{{ old('nombre', $activo->nombre) }}" required>
+                                           id="nombre" name="nombre" value="{{ old('nombre', $activo->nombre) }}" 
+                                           {{ $activoDadoDeBaja ? 'disabled' : 'required' }}>
                                     @error('nombre')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -41,12 +53,12 @@
                                 
                                 <div class="mb-3">
                                     <label for="estado" class="form-label">Estado *</label>
-                                    <select class="form-select @error('estado') is-invalid @enderror" id="estado" name="estado" required>
+                                    <select class="form-select @error('estado') is-invalid @enderror" id="estado" name="estado" 
+                                            {{ $activoDadoDeBaja ? 'disabled' : 'required' }}>
                                         <option value="">Seleccionar estado</option>
                                         <option value="bueno" {{ old('estado', $activo->estado) == 'bueno' ? 'selected' : '' }}>Bueno</option>
                                         <option value="regular" {{ old('estado', $activo->estado) == 'regular' ? 'selected' : '' }}>Regular</option>
                                         <option value="malo" {{ old('estado', $activo->estado) == 'malo' ? 'selected' : '' }}>Malo</option>
-                                        <option value="dado de baja" {{ old('estado', $activo->estado) == 'dado de baja' ? 'selected' : '' }}>Dado de Baja</option>
                                     </select>
                                     @error('estado')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -198,8 +210,8 @@
                         
                         <div class="d-flex justify-content-end gap-2">
                             <a href="{{ route('activos.index') }}" class="btn btn-secondary">Cancelar</a>
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save"></i> Actualizar Activo
+                            <button type="submit" class="btn btn-primary" {{ $activoDadoDeBaja ? 'disabled' : '' }}>
+                                <i class="fas fa-save"></i> {{ $activoDadoDeBaja ? 'Edición Deshabilitada' : 'Actualizar Activo' }}
                             </button>
                         </div>
                     </form>
@@ -208,4 +220,24 @@
         </div>
     </div>
 </div>
+
+@if($activoDadoDeBaja)
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Deshabilitar todos los campos del formulario
+    const form = document.querySelector('form');
+    const inputs = form.querySelectorAll('input, select, textarea');
+    
+    inputs.forEach(function(input) {
+        input.disabled = true;
+    });
+    
+    // Deshabilitar el botón de envío
+    const submitButton = form.querySelector('button[type="submit"]');
+    if (submitButton) {
+        submitButton.disabled = true;
+    }
+});
+</script>
+@endif
 @endsection

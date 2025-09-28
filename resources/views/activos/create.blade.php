@@ -38,7 +38,6 @@
                                 <option value="bueno" {{ old('estado') === 'bueno' ? 'selected' : '' }}>Bueno</option>
                                 <option value="regular" {{ old('estado') === 'regular' ? 'selected' : '' }}>Regular</option>
                                 <option value="malo" {{ old('estado') === 'malo' ? 'selected' : '' }}>Malo</option>
-                                <option value="dado de baja" {{ old('estado') === 'dado de baja' ? 'selected' : '' }}>Dado de Baja</option>
                             </select>
                             @error('estado')
                                 <div class="invalid-feedback">{{ $message }}</div>

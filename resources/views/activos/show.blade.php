@@ -216,6 +216,23 @@
                         </div>
                     </div>
                     @endif
+                    
+                    <!-- Acciones -->
+                    <div class="mt-4">
+                        <a href="{{ route('activos.edit', $activo) }}" class="btn btn-primary">
+                            <i class="bi bi-pencil"></i> Editar
+                        </a>
+                        
+                        @if($activo->estaDisponible() && !$activo->tieneBaja())
+                            <a href="{{ route('bajas.create', $activo) }}" class="btn btn-danger">
+                                <i class="bi bi-trash"></i> Dar de Baja
+                            </a>
+                        @endif
+                        
+                        <a href="{{ route('activos.index') }}" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Volver
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
