@@ -257,30 +257,35 @@ class ImportacionActivoController extends Controller
         return Activo::create([
             'codigo' => $fila['codigo'],
             'nombre' => $fila['nombre'],
-            'estado' => $fila['estado'],
-            'valor_compra' => $fila['valor_compra'] ?? null,
-            'fecha_compra' => $fila['fecha_compra'] ?? null,
-            'marca' => $fila['marca'] ?? null,
-            'modelo' => $fila['modelo'] ?? null,
-            'serial' => $fila['serial'] ?? null,
-            'ubicacion' => $fila['ubicacion'] ?? null,
-            'nombre_responsable' => $fila['nombre_responsable'] ?? null,
-            'codigo_responsable' => $fila['codigo_responsable'] ?? null,
-            'tipo_bien' => $fila['tipo_bien'] ?? null,
-            'observacion' => $fila['observacion'] ?? null,
-            'descripcion' => $fila['descripcion'] ?? null,
             'codigo_grupo_articulo' => $fila['codigo_grupo_articulo'] ?? null,
             'codigo_grupo_contable' => $fila['codigo_grupo_contable'] ?? null,
+            'tipo_bien' => $fila['tipo_bien'] ?? null,
             'codigo_servicio' => $fila['codigo_servicio'] ?? null,
+            'codigo_responsable' => $fila['codigo_responsable'] ?? null,
+            'nombre_responsable' => $fila['nombre_responsable'] ?? null,
+            'fecha_compra' => $fila['fecha_compra'] ?? null,
             'nro_compra' => $fila['nro_compra'] ?? null,
             'vida_util' => $fila['vida_util'] ?? null,
+            'estado' => $fila['estado'],
+            'modelo' => $fila['modelo'] ?? null,
+            'marca' => $fila['marca'] ?? null,
+            'serial' => $fila['serial'] ?? null,
             'fecha_depreciacion' => $fila['fecha_depreciacion'] ?? null,
+            'valor_compra' => $fila['valor_compra'] ?? null,
             'valor_depreciacion' => $fila['valor_depreciacion'] ?? null,
+            'ubicacion' => $fila['ubicacion'] ?? null,
             'recurso' => $fila['recurso'] ?? null,
             'tipo_adquisicion' => $fila['tipo_adquisicion'] ?? null,
+            'observacion' => $fila['observacion'] ?? null,
+            'descripcion' => $fila['descripcion'] ?? null,
             'tipo_hoja_vi' => $fila['tipo_hoja_vi'] ?? null,
             'area_administrativa' => $fila['area_administrativa'] ?? null,
             'valor_residual' => $fila['valor_residual'] ?? null,
+            'fecha_creacion' => $fila['fecha_creacion'] ?? null,
+            'grupo_articulo' => $fila['grupo_articulo'] ?? null,
+            'fecha_depre' => $fila['fecha_depre'] ?? null,
+            't_adquisicion' => $fila['t_adquisicion'] ?? null,
+            'tipo_hoja' => $fila['tipo_hoja'] ?? null,
         ]);
     }
 
@@ -291,30 +296,35 @@ class ImportacionActivoController extends Controller
     {
         $activo->update([
             'nombre' => $fila['nombre'],
-            'estado' => $fila['estado'],
-            'valor_compra' => $fila['valor_compra'] ?? $activo->valor_compra,
-            'fecha_compra' => $fila['fecha_compra'] ?? $activo->fecha_compra,
-            'marca' => $fila['marca'] ?? $activo->marca,
-            'modelo' => $fila['modelo'] ?? $activo->modelo,
-            'serial' => $fila['serial'] ?? $activo->serial,
-            'ubicacion' => $fila['ubicacion'] ?? $activo->ubicacion,
-            'nombre_responsable' => $fila['nombre_responsable'] ?? $activo->nombre_responsable,
-            'codigo_responsable' => $fila['codigo_responsable'] ?? $activo->codigo_responsable,
-            'tipo_bien' => $fila['tipo_bien'] ?? $activo->tipo_bien,
-            'observacion' => $fila['observacion'] ?? $activo->observacion,
-            'descripcion' => $fila['descripcion'] ?? $activo->descripcion,
             'codigo_grupo_articulo' => $fila['codigo_grupo_articulo'] ?? $activo->codigo_grupo_articulo,
             'codigo_grupo_contable' => $fila['codigo_grupo_contable'] ?? $activo->codigo_grupo_contable,
+            'tipo_bien' => $fila['tipo_bien'] ?? $activo->tipo_bien,
             'codigo_servicio' => $fila['codigo_servicio'] ?? $activo->codigo_servicio,
+            'codigo_responsable' => $fila['codigo_responsable'] ?? $activo->codigo_responsable,
+            'nombre_responsable' => $fila['nombre_responsable'] ?? $activo->nombre_responsable,
+            'fecha_compra' => $fila['fecha_compra'] ?? $activo->fecha_compra,
             'nro_compra' => $fila['nro_compra'] ?? $activo->nro_compra,
             'vida_util' => $fila['vida_util'] ?? $activo->vida_util,
+            'estado' => $fila['estado'],
+            'modelo' => $fila['modelo'] ?? $activo->modelo,
+            'marca' => $fila['marca'] ?? $activo->marca,
+            'serial' => $fila['serial'] ?? $activo->serial,
             'fecha_depreciacion' => $fila['fecha_depreciacion'] ?? $activo->fecha_depreciacion,
+            'valor_compra' => $fila['valor_compra'] ?? $activo->valor_compra,
             'valor_depreciacion' => $fila['valor_depreciacion'] ?? $activo->valor_depreciacion,
+            'ubicacion' => $fila['ubicacion'] ?? $activo->ubicacion,
             'recurso' => $fila['recurso'] ?? $activo->recurso,
             'tipo_adquisicion' => $fila['tipo_adquisicion'] ?? $activo->tipo_adquisicion,
+            'observacion' => $fila['observacion'] ?? $activo->observacion,
+            'descripcion' => $fila['descripcion'] ?? $activo->descripcion,
             'tipo_hoja_vi' => $fila['tipo_hoja_vi'] ?? $activo->tipo_hoja_vi,
             'area_administrativa' => $fila['area_administrativa'] ?? $activo->area_administrativa,
             'valor_residual' => $fila['valor_residual'] ?? $activo->valor_residual,
+            'fecha_creacion' => $fila['fecha_creacion'] ?? $activo->fecha_creacion,
+            'grupo_articulo' => $fila['grupo_articulo'] ?? $activo->grupo_articulo,
+            'fecha_depre' => $fila['fecha_depre'] ?? $activo->fecha_depre,
+            't_adquisicion' => $fila['t_adquisicion'] ?? $activo->t_adquisicion,
+            'tipo_hoja' => $fila['tipo_hoja'] ?? $activo->tipo_hoja,
         ]);
     }
 
@@ -373,35 +383,96 @@ class ImportacionActivoController extends Controller
         }
 
         $plantilla = [
-            ['codigo', 'nombre', 'estado', 'valor_compra', 'fecha_compra', 'marca', 'modelo', 'serial', 'ubicacion', 'nombre_responsable', 'codigo_responsable', 'tipo_bien', 'observacion', 'descripcion'],
-            ['ACT001', 'Laptop Dell', 'bueno', '1500.00', '2024-01-15', 'Dell', 'Inspiron 15', 'DL123456', 'Oficina Principal', 'MARTHA PARADA', '60258814', 'Equipo', 'Laptop para desarrollo', 'Laptop Dell Inspiron 15 pulgadas'],
-            ['ACT002', 'Monitor Samsung', 'bueno', '300.00', '2024-01-20', 'Samsung', '24 pulgadas', 'SM789012', 'Oficina Principal', 'Ana Isabel Camacho', '60261692', 'Equipo', 'Monitor para oficina', 'Monitor Samsung 24 pulgadas Full HD'],
-            ['ACT003', 'Impresora HP', 'bueno', '200.00', '2024-01-25', 'HP', 'LaserJet Pro', 'HP987654', 'Oficina Secundaria', 'Anais Quintana Diaz', '60250586', 'Equipo', 'Impresora para oficina', 'Impresora HP LaserJet Pro'],
-            ['ACT004', 'Teclado Logitech', 'bueno', '50.00', '2024-01-30', 'Logitech', 'K120', 'LG456789', 'Oficina Principal', 'CAICEDO CARRILLO BLANCA ESTELLA', '60254588', 'Equipo', 'Teclado para oficina', 'Teclado Logitech K120 USB'],
-            ['ACT005', 'Mouse Microsoft', 'bueno', '30.00', '2024-02-01', 'Microsoft', 'Basic Optical', 'MS789123', 'Oficina Principal', 'clara ines', '60258755', 'Equipo', 'Mouse para oficina', 'Mouse Microsoft Basic Optical'],
+            [
+                'codigo', 'nombre', 'codigo_grupo_articulo', 'codigo_grupo_contable', 'tipo_bien', 'codigo_servicio',
+                'codigo_responsable', 'nombre_responsable', 'fecha_compra', 'nro_compra', 'vida_util', 'estado',
+                'modelo', 'marca', 'serial', 'fecha_depreciacion', 'valor_compra', 'valor_depreciacion',
+                'ubicacion', 'recurso', 'tipo_adquisicion', 'observacion', 'descripcion', 'tipo_hoja_vi',
+                'area_administrativa', 'valor_residual', 'fecha_creacion', 'grupo_articulo', 'fecha_depre',
+                't_adquisicion', 'tipo_hoja'
+            ],
+            [
+                'ACT001', 'Laptop Dell', 'GA001', 'GC001', 'Equipo', 'CS001',
+                '60258814', 'MARTHA PARADA', '2024-01-15', 'COMP001', '5', 'bueno',
+                'Inspiron 15', 'Dell', 'DL123456', '2024-01-15', '1500.00', '300.00',
+                'Oficina Principal', 'REC001', 'Compra', 'Laptop para desarrollo', 'Laptop Dell Inspiron 15 pulgadas', 'VI001',
+                'Administración', '150.00', '2024-01-15', 'Grupo A', '2024-01-15',
+                'Compra Directa', 'Hoja 1'
+            ],
+            [
+                'ACT002', 'Monitor Samsung', 'GA002', 'GC002', 'Equipo', 'CS002',
+                '60261692', 'Ana Isabel Camacho', '2024-01-20', 'COMP002', '3', 'bueno',
+                '24 pulgadas', 'Samsung', 'SM789012', '2024-01-20', '300.00', '60.00',
+                'Oficina Principal', 'REC002', 'Compra', 'Monitor para oficina', 'Monitor Samsung 24 pulgadas Full HD', 'VI002',
+                'Administración', '30.00', '2024-01-20', 'Grupo B', '2024-01-20',
+                'Compra Directa', 'Hoja 2'
+            ],
+            [
+                'ACT003', 'Impresora HP', 'GA003', 'GC003', 'Equipo', 'CS003',
+                '60250586', 'Anais Quintana Diaz', '2024-01-25', 'COMP003', '4', 'bueno',
+                'LaserJet Pro', 'HP', 'HP987654', '2024-01-25', '200.00', '40.00',
+                'Oficina Secundaria', 'REC003', 'Compra', 'Impresora para oficina', 'Impresora HP LaserJet Pro', 'VI003',
+                'Administración', '20.00', '2024-01-25', 'Grupo C', '2024-01-25',
+                'Compra Directa', 'Hoja 3'
+            ],
+            [
+                'ACT004', 'Teclado Logitech', 'GA004', 'GC004', 'Equipo', 'CS004',
+                '60254588', 'CAICEDO CARRILLO BLANCA ESTELLA', '2024-01-30', 'COMP004', '2', 'bueno',
+                'K120', 'Logitech', 'LG456789', '2024-01-30', '50.00', '10.00',
+                'Oficina Principal', 'REC004', 'Compra', 'Teclado para oficina', 'Teclado Logitech K120 USB', 'VI004',
+                'Administración', '5.00', '2024-01-30', 'Grupo D', '2024-01-30',
+                'Compra Directa', 'Hoja 4'
+            ],
+            [
+                'ACT005', 'Mouse Microsoft', 'GA005', 'GC005', 'Equipo', 'CS005',
+                '60258755', 'clara ines', '2024-02-01', 'COMP005', '2', 'bueno',
+                'Basic Optical', 'Microsoft', 'MS789123', '2024-02-01', '30.00', '6.00',
+                'Oficina Principal', 'REC005', 'Compra', 'Mouse para oficina', 'Mouse Microsoft Basic Optical', 'VI005',
+                'Administración', '3.00', '2024-02-01', 'Grupo E', '2024-02-01',
+                'Compra Directa', 'Hoja 5'
+            ]
         ];
 
-        // Crear el archivo Excel usando una clase simple
-        $export = new class($plantilla) implements FromArray, WithHeadings {
-            private $datos;
-            
-            public function __construct($datos) {
-                $this->datos = $datos;
-            }
-            
-            public function array(): array
-            {
-                return array_slice($this->datos, 1); // Excluir el encabezado
-            }
-            
-            public function headings(): array
-            {
-                return $this->datos[0]; // Solo el encabezado
-            }
-        };
-
         try {
-            Excel::store($export, 'plantillas/plantilla_activos.xlsx', 'local');
+            // Asegurar que el directorio existe
+            $directorio = storage_path('app/plantillas');
+            if (!is_dir($directorio)) {
+                mkdir($directorio, 0755, true);
+            }
+            
+            // Crear archivo Excel usando PhpSpreadsheet
+            $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+            $sheet = $spreadsheet->getActiveSheet();
+            
+            // Agregar encabezados
+            $col = 1;
+            foreach ($plantilla[0] as $encabezado) {
+                $sheet->setCellValueByColumnAndRow($col, 1, $encabezado);
+                $col++;
+            }
+            
+            // Agregar datos
+            $row = 2;
+            foreach (array_slice($plantilla, 1) as $fila) {
+                $col = 1;
+                foreach ($fila as $valor) {
+                    $sheet->setCellValueByColumnAndRow($col, $row, $valor);
+                    $col++;
+                }
+                $row++;
+            }
+            
+            // Guardar como Excel
+            $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+            $rutaCompleta = storage_path('app/plantillas/plantilla_activos.xlsx');
+            $writer->save($rutaCompleta);
+            
+            // Verificar que el archivo se creó correctamente
+            if (!file_exists($rutaCompleta)) {
+                throw new \Exception('No se pudo crear el archivo de plantilla');
+            }
+            
+            Log::info('Plantilla creada exitosamente con ' . count($plantilla[0]) . ' campos');
         } catch (\Exception $e) {
             Log::error('Error al crear plantilla: ' . $e->getMessage());
             throw $e;
