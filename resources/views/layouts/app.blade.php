@@ -25,24 +25,33 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
+            @if(auth()->user()->esAdmin())
             <a class="navbar-brand" href="{{ route('dashboard') }}">
                 <i class="bi bi-box-seam"></i> Dashboard
             </a>
+            @else
+            <a class="navbar-brand" href="{{ route('asignaciones.index') }}">
+                <i class="bi bi-person-check"></i> Asignaciones
+            </a>
+            @endif
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
+                    @if(auth()->user()->esAdmin())
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('activos.index') }}">
                             <i class="bi bi-list-ul"></i> Activos
                         </a>
                     </li>
+                    @endif
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('asignaciones.index') }}">
                             <i class="bi bi-person-check"></i> Asignaciones
                         </a>
                     </li>
+                    @if(auth()->user()->esAdmin())
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('bajas.index') }}">
                             <i class="bi bi-trash"></i> Bajas
@@ -53,11 +62,14 @@
                             <i class="bi bi-graph-up"></i> Reportes
                         </a>
                     </li>
+                    @endif
+                    @if(auth()->user()->esAdmin())
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('importaciones.index') }}">
                             <i class="bi bi-upload"></i> Importaciones
                         </a>
                     </li>
+                    @endif
                     @if(auth()->user()->esAdmin())
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">

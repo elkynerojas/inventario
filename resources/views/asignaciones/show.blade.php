@@ -114,26 +114,28 @@
 
                 <!-- Acciones según el estado -->
                 <div class="mt-4">
-                    @if($asignacion->estaActiva())
-                        <!-- Modal para devolver -->
-                        <button type="button" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#devolverModal">
-                            <i class="bi bi-arrow-return-left"></i> Devolver Activo
-                        </button>
+                    @if(auth()->user()->esAdmin())
+                        @if($asignacion->estaActiva())
+                            <!-- Modal para devolver -->
+                            <button type="button" class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#devolverModal">
+                                <i class="bi bi-arrow-return-left"></i> Devolver Activo
+                            </button>
 
-                        <!-- Modal para marcar como perdido -->
-                        <button type="button" class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#perdidoModal">
-                            <i class="bi bi-exclamation-triangle"></i> Marcar como Perdido
-                        </button>
+                            <!-- Modal para marcar como perdido -->
+                            <button type="button" class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#perdidoModal">
+                                <i class="bi bi-exclamation-triangle"></i> Marcar como Perdido
+                            </button>
+                        @endif
+
+                        <!-- Generar acta de asignación -->
+                        <a href="{{ route('asignaciones.acta', $asignacion->id) }}" class="btn btn-primary me-2" target="_blank">
+                            <i class="bi bi-file-earmark-pdf"></i> Generar Acta PDF
+                        </a>
+
+                        <a href="{{ route('asignaciones.edit', $asignacion) }}" class="btn btn-outline-warning me-2">
+                            <i class="bi bi-pencil"></i> Editar
+                        </a>
                     @endif
-
-                    <!-- Generar acta de asignación -->
-                    <a href="{{ route('asignaciones.acta', $asignacion->id) }}" class="btn btn-primary me-2" target="_blank">
-                        <i class="bi bi-file-earmark-pdf"></i> Generar Acta PDF
-                    </a>
-
-                    <a href="{{ route('asignaciones.edit', $asignacion) }}" class="btn btn-outline-warning me-2">
-                        <i class="bi bi-pencil"></i> Editar
-                    </a>
 
                     <a href="{{ route('asignaciones.index') }}" class="btn btn-outline-secondary">
                         <i class="bi bi-arrow-left"></i> Volver
@@ -182,11 +184,13 @@
                         </div>
                     </div>
 
+                    @if(auth()->user()->esAdmin())
                     <div class="mt-3">
                         <a href="{{ route('asignaciones.historial-activo', $asignacion->activo) }}" class="btn btn-outline-primary btn-sm w-100">
                             <i class="bi bi-clock-history"></i> Ver Historial Completo
                         </a>
                     </div>
+                    @endif
                 @else
                     <div class="alert alert-warning text-center">
                         <i class="bi bi-exclamation-triangle"></i>

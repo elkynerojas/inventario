@@ -8,9 +8,9 @@
         </p>
     </header>
 
-    <form method="post" action="{{ route('password.update') }}">
+    <form method="post" action="{{ route('profile.update-password') }}">
         @csrf
-        @method('put')
+        @method('patch')
 
         <div class="mb-3">
             <label for="update_password_current_password" class="form-label fw-semibold">Contraseña Actual</label>

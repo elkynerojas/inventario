@@ -20,6 +20,11 @@ class AsignacionActivoController extends Controller
     {
         $query = AsignacionActivo::with(['activo', 'usuario', 'asignadoPor']);
 
+        // Si el usuario no es administrador, solo mostrar sus asignaciones
+        if (!auth()->user()->esAdmin()) {
+            $query->where('user_id', auth()->id());
+        }
+
         // Filtros
         if ($request->filled('estado')) {
             $query->where('estado', $request->estado);

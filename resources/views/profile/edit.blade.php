@@ -12,12 +12,14 @@
             </div>
         </div>
 
+        @if(auth()->user()->esAdmin())
         <!-- Información del Perfil -->
         <div class="card mb-4">
             <div class="card-body">
                 @include('profile.partials.update-profile-information-form')
             </div>
         </div>
+        @endif
 
         <!-- Cambiar Contraseña -->
         <div class="card mb-4">
@@ -26,12 +28,14 @@
             </div>
         </div>
 
+        @if(auth()->user()->esAdmin())
         <!-- Eliminar Cuenta -->
         <div class="card">
             <div class="card-body">
                 @include('profile.partials.delete-user-form')
             </div>
         </div>
+        @endif
     </div>
 </div>
 @endsection

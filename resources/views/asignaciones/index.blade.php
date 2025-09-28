@@ -10,6 +10,7 @@
                 <h5 class="mb-0">
                     <i class="bi bi-person-check"></i> Asignaciones de Activos
                 </h5>
+                @if(auth()->user()->esAdmin())
                 <div class="d-flex gap-2">
                     <a href="{{ route('actas.index') }}" class="btn btn-success">
                         <i class="bi bi-file-earmark-text"></i> Generar Actas
@@ -18,6 +19,7 @@
                         <i class="bi bi-plus-circle"></i> Nueva Asignación
                     </a>
                 </div>
+                @endif
             </div>
             <div class="card-body">
                 <!-- Estadísticas -->
@@ -57,6 +59,7 @@
                 </div>
 
                 <!-- Filtros -->
+                @if(auth()->user()->esAdmin())
                 <form method="GET" class="row g-3 mb-4">
                     <div class="col-md-3">
                         <label for="estado" class="form-label">Estado</label>
@@ -110,6 +113,7 @@
                         </a>
                     </div>
                 </form>
+                @endif
 
                 <!-- Tabla de asignaciones -->
                 <div class="table-responsive">
