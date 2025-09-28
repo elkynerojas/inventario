@@ -3,6 +3,7 @@
 use App\Http\Controllers\ActivoController;
 use App\Http\Controllers\ActaAsignacionController;
 use App\Http\Controllers\AsignacionActivoController;
+use App\Http\Controllers\AyudaController;
 use App\Http\Controllers\BajaActivoController;
 use App\Http\Controllers\ConfiguracionController;
 use App\Http\Controllers\DashboardController;
@@ -101,11 +102,21 @@ Route::middleware(['auth', 'admin.only'])->group(function () {
     Route::get('actas', [ActaAsignacionController::class, 'index'])->name('actas.index');
     Route::get('actas/vista-previa', [ActaAsignacionController::class, 'vistaPrevia'])->name('actas.vista-previa');
     Route::get('actas/generar', [ActaAsignacionController::class, 'generar'])->name('actas.generar');
+    
+    // Rutas de ayuda para administradores
+    Route::get('/ayuda/activos', [AyudaController::class, 'activos'])->name('ayuda.activos');
+    Route::get('/ayuda/reportes', [AyudaController::class, 'reportes'])->name('ayuda.reportes');
+    Route::get('/ayuda/usuarios', [AyudaController::class, 'usuarios'])->name('ayuda.usuarios');
+    Route::get('/ayuda/importaciones', [AyudaController::class, 'importaciones'])->name('ayuda.importaciones');
 });
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'updatePassword'])->name('profile.update-password');
+    
+    // Rutas de ayuda
+    Route::get('/ayuda', [AyudaController::class, 'index'])->name('ayuda.index');
+    Route::get('/ayuda/asignaciones', [AyudaController::class, 'asignaciones'])->name('ayuda.asignaciones');
 });
 
 // Rutas de perfil solo para administradores

@@ -90,6 +90,11 @@
                         </a>
                     </li>
                     @endif
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('ayuda.index') }}">
+                            <i class="bi bi-question-circle"></i> Ayuda
+                        </a>
+                    </li>
                 </ul>
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
