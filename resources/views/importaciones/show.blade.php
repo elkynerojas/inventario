@@ -67,7 +67,15 @@
                                         </tr>
                                         <tr>
                                             <td class="fw-bold">Usuario:</td>
-                                            <td>{{ $importacion->usuario->name ?? 'N/A' }}</td>
+                                            <td>{{ $importacion->usuario->name ?? 'Usuario no encontrado' }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold">Total Registros:</td>
+                                            <td>{{ $importacion->total_registros ?? 0 }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold">Registros Procesados:</td>
+                                            <td>{{ $importacion->registros_procesados ?? 0 }}</td>
                                         </tr>
                                     </table>
                                 </div>
@@ -75,11 +83,19 @@
                                     <table class="table table-borderless">
                                         <tr>
                                             <td class="fw-bold">Fecha de Subida:</td>
-                                            <td>{{ $importacion->created_at ? $importacion->created_at->format('d/m/Y H:i:s') : 'N/A' }}</td>
+                                            <td>{{ $importacion->created_at ? $importacion->created_at->format('d/m/Y H:i:s') : 'No disponible' }}</td>
                                         </tr>
                                         <tr>
                                             <td class="fw-bold">Última Actualización:</td>
-                                            <td>{{ $importacion->updated_at ? $importacion->updated_at->format('d/m/Y H:i:s') : 'N/A' }}</td>
+                                            <td>{{ $importacion->updated_at ? $importacion->updated_at->format('d/m/Y H:i:s') : 'No disponible' }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold">Registros Exitosos:</td>
+                                            <td>{{ $importacion->registros_exitosos ?? 0 }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold">Registros Fallidos:</td>
+                                            <td>{{ $importacion->registros_fallidos ?? 0 }}</td>
                                         </tr>
                                         @if($importacion->observaciones && isset($importacion->observaciones['fecha_procesamiento']))
                                         <tr>
@@ -108,16 +124,16 @@
                                         <div class="progress-bar progress-bar-striped 
                                             @if($importacion->estado === 'procesando') progress-bar-animated @endif" 
                                              role="progressbar" 
-                                             style="width: {{ $importacion->porcentaje_progreso }}%"
-                                             aria-valuenow="{{ $importacion->porcentaje_progreso }}" 
+                                             style="width: {{ $importacion->porcentaje_progreso ?? 0 }}%"
+                                             aria-valuenow="{{ $importacion->porcentaje_progreso ?? 0 }}" 
                                              aria-valuemin="0" aria-valuemax="100">
-                                            {{ $importacion->porcentaje_progreso }}%
+                                            {{ number_format($importacion->porcentaje_progreso ?? 0, 1) }}%
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-4 text-end">
                                     <span class="badge bg-primary fs-6">
-                                        {{ $importacion->registros_procesados }} / {{ $importacion->total_registros }}
+                                        {{ $importacion->registros_procesados ?? 0 }} / {{ $importacion->total_registros ?? 0 }}
                                     </span>
                                 </div>
                             </div>
@@ -136,25 +152,25 @@
                             <div class="row text-center">
                                 <div class="col-md-3">
                                     <div class="border rounded p-3">
-                                        <h3 class="text-primary mb-1">{{ $importacion->total_registros }}</h3>
+                                        <h3 class="text-primary mb-1">{{ $importacion->total_registros ?? 0 }}</h3>
                                         <small class="text-muted">Total Registros</small>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="border rounded p-3">
-                                        <h3 class="text-success mb-1">{{ $importacion->registros_exitosos }}</h3>
+                                        <h3 class="text-success mb-1">{{ $importacion->registros_exitosos ?? 0 }}</h3>
                                         <small class="text-muted">Exitosos</small>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="border rounded p-3">
-                                        <h3 class="text-danger mb-1">{{ $importacion->registros_fallidos }}</h3>
+                                        <h3 class="text-danger mb-1">{{ $importacion->registros_fallidos ?? 0 }}</h3>
                                         <small class="text-muted">Fallidos</small>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="border rounded p-3">
-                                        <h3 class="text-info mb-1">{{ $importacion->porcentaje_progreso }}%</h3>
+                                        <h3 class="text-info mb-1">{{ number_format($importacion->porcentaje_progreso ?? 0, 1) }}%</h3>
                                         <small class="text-muted">Progreso</small>
                                     </div>
                                 </div>

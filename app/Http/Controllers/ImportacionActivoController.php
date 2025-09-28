@@ -106,8 +106,9 @@ class ImportacionActivoController extends Controller
     /**
      * Mostrar detalles de una importación
      */
-    public function show(ImportacionActivo $importacion): View
+    public function show($importacion): View
     {
+        $importacion = ImportacionActivo::findOrFail($importacion);
         $importacion->load('usuario');
         return view('importaciones.show', compact('importacion'));
     }
@@ -171,7 +172,15 @@ class ImportacionActivoController extends Controller
 
         $filas = $datos[0];
         $totalRegistros = count($filas);
-        $importacion->update(['total_registros' => $totalRegistros]);
+        
+        // Actualizar el total de registros al inicio
+        $importacion->update([
+            'total_registros' => $totalRegistros,
+            'registros_procesados' => 0,
+            'registros_exitosos' => 0,
+            'registros_fallidos' => 0,
+            'estado' => 'procesando'
+        ]);
 
         $registrosExitosos = 0;
         $registrosFallidos = 0;
@@ -195,6 +204,7 @@ class ImportacionActivoController extends Controller
                     Log::error("Error procesando fila " . ($indice + 2) . ": " . $e->getMessage());
                 }
 
+                // Actualizar progreso en cada iteración
                 $importacion->update([
                     'registros_procesados' => $indice + 1,
                     'registros_exitosos' => $registrosExitosos,
@@ -204,12 +214,14 @@ class ImportacionActivoController extends Controller
 
             DB::commit();
 
+            // Actualización final con estado completado
             $importacion->update([
                 'estado' => 'completado',
                 'errores' => $errores,
                 'observaciones' => [
                     'fecha_procesamiento' => now()->format('Y-m-d H:i:s'),
                     'total_errores' => count($errores),
+                    'resumen' => "Procesados: {$totalRegistros}, Exitosos: {$registrosExitosos}, Fallidos: {$registrosFallidos}"
                 ]
             ]);
 
